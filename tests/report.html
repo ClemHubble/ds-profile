@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ds-profile · titanic.csv</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0f172a; color: #e2e8f0; font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; padding: 24px; }
+  .header { background: linear-gradient(135deg,#0e7490,#4f46e5); border-radius: 12px; padding: 28px 32px; margin-bottom: 24px; }
+  .header h1 { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 4px; }
+  .header .sub { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+  .overview-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); gap: 12px; margin-bottom: 24px; }
+  .overview-card { background: #1e293b; border-radius: 10px; padding: 16px; text-align: center; }
+  .overview-card .ov-val { font-size: 1.5rem; font-weight: 800; color: #f1f5f9; }
+  .overview-card .ov-label { font-size: 0.75rem; color: #64748b; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .section { background: #1e293b; border-radius: 10px; padding: 24px; margin-bottom: 24px; }
+  .section-title { font-size: 1rem; font-weight: 700; color: #f1f5f9; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .col-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(340px,1fr)); gap: 16px; }
+  .col-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 18px; }
+  .stat-box { background: #1e293b; border-radius: 6px; padding: 10px; text-align: center; }
+  .stat-label { font-size: 0.7rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; }
+  .stat-val { font-size: 0.95rem; font-weight: 700; color: #f1f5f9; margin-top: 4px; }
+  code { font-family: "JetBrains Mono","Fira Code",monospace; }
+  .footer { text-align: center; color: #334155; font-size: 0.8rem; margin-top: 32px; padding: 16px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 titanic.csv</h1>
+  <div class="sub">ds-profile report · generated 2026-06-06 11:13</div>
+</div>
+
+<div class="overview-grid">
+  <div class="overview-card"><div class="ov-val">50</div><div class="ov-label">Rows</div></div>
+  <div class="overview-card"><div class="ov-val">11</div><div class="ov-label">Columns</div></div>
+  <div class="overview-card"><div class="ov-val" style="color:#22c55e">0</div><div class="ov-label">Duplicates</div></div>
+  <div class="overview-card"><div class="ov-val">2.8 KB</div><div class="ov-label">File Size</div></div>
+</div>
+
+<div class="section">
+  <div class="section-title">Column Types</div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><span style="background:#4ade80;color:#166534;padding:2px 8px;border-radius:9999px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em">BOOLEAN</span> <span style="color:#94a3b8;font-size:0.85rem">1</span> <span style="background:#c084fc;color:#7e22ce;padding:2px 8px;border-radius:9999px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em">CATEGORICAL</span> <span style="color:#94a3b8;font-size:0.85rem">4</span> <span style="background:#22d3ee;color:#0e7490;padding:2px 8px;border-radius:9999px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em">NUMERIC</span> <span style="color:#94a3b8;font-size:0.85rem">6</span> </div>
+</div>
+
+
+
+
+
+    <div class="section">
+      <h2 class="section-title">Correlation Matrix <span style="font-size:0.75rem;color:#475569;font-weight:400">(Pearson r)</span></h2>
+      <div style="overflow-x:auto">
+        <table style="border-collapse:collapse;font-family:monospace">
+          <thead><tr><th></th><th style="padding:6px 10px;font-size:0.75rem;color:#94a3b8;white-space:nowrap">passenger_id</th><th style="padding:6px 10px;font-size:0.75rem;color:#94a3b8;white-space:nowrap">pclass</th><th style="padding:6px 10px;font-size:0.75rem;color:#94a3b8;white-space:nowrap">age</th><th style="padding:6px 10px;font-size:0.75rem;color:#94a3b8;white-space:nowrap">sibsp</th><th style="padding:6px 10px;font-size:0.75rem;color:#94a3b8;white-space:nowrap">parch</th><th style="padding:6px 10px;font-size:0.75rem;color:#94a3b8;white-space:nowrap">fare</th></tr></thead>
+          <tbody><tr><th style="padding:6px 10px;text-align:right;font-size:0.75rem;color:#94a3b8;white-space:nowrap">passenger_id</th><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#1e293b;color:#475569">+1.00</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">+0.15</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">-0.10</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">+0.02</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">-0.11</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">-0.01</td></tr><tr><th style="padding:6px 10px;text-align:right;font-size:0.75rem;color:#94a3b8;white-space:nowrap">pclass</th><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">+0.15</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#1e293b;color:#475569">+1.00</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:rgba(239,68,68,0.24);color:#7f1d1d">-0.48</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">+0.00</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">+0.12</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:rgba(239,68,68,0.30);color:#7f1d1d">-0.61</td></tr><tr><th style="padding:6px 10px;text-align:right;font-size:0.75rem;color:#94a3b8;white-space:nowrap">age</th><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">-0.10</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:rgba(239,68,68,0.24);color:#7f1d1d">-0.48</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#1e293b;color:#475569">+1.00</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:rgba(239,68,68,0.26);color:#7f1d1d">-0.52</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">-0.07</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">-0.00</td></tr><tr><th style="padding:6px 10px;text-align:right;font-size:0.75rem;color:#94a3b8;white-space:nowrap">sibsp</th><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">+0.02</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">+0.00</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:rgba(239,68,68,0.26);color:#7f1d1d">-0.52</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#1e293b;color:#475569">+1.00</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">+0.30</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:rgba(34,211,238,0.21);color:#164e63">+0.42</td></tr><tr><th style="padding:6px 10px;text-align:right;font-size:0.75rem;color:#94a3b8;white-space:nowrap">parch</th><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">-0.11</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">+0.12</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">-0.07</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">+0.30</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#1e293b;color:#475569">+1.00</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">+0.21</td></tr><tr><th style="padding:6px 10px;text-align:right;font-size:0.75rem;color:#94a3b8;white-space:nowrap">fare</th><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">-0.01</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:rgba(239,68,68,0.30);color:#7f1d1d">-0.61</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">-0.00</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:rgba(34,211,238,0.21);color:#164e63">+0.42</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#0f172a;color:#64748b">+0.21</td><td style="padding:6px 10px;text-align:center;font-size:0.8rem;background:#1e293b;color:#475569">+1.00</td></tr></tbody>
+        </table>
+      </div>
+      <div style="margin-top:12px;font-size:0.8rem;color:#64748b">
+        <span style="color:#22d3ee">■</span> positive  
+        <span style="color:#ef4444;margin-left:12px">■</span> negative  
+        <span style="color:#94a3b8;margin-left:12px">|r| ≥ 0.7 strong · ≥ 0.4 moderate</span>
+      </div>
+    </div>
+
+<div class="section">
+  <div class="section-title">Column Profiles</div>
+  <div class="col-grid">
+
+    <div class="col-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="margin:0;font-size:1rem;color:#f1f5f9">passenger_id</h3>
+        <span style="background:#22d3ee;color:#0e7490;padding:2px 8px;border-radius:9999px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em">NUMERIC</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.85rem;color:#94a3b8;margin-bottom:10px">
+        <div>Missing: <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:120px;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+        <div style="width:0.0%;height:100%;background:#22c55e;border-radius:4px"></div>
+      </div>
+      <span style="color:#22c55e;font-weight:600">0.0%</span>
+      <span style="color:#64748b">(0/50)</span>
+    </div></div>
+        <div>Unique: <span style="color:#e2e8f0;font-weight:600">50</span>
+          <span style="color:#475569"> (100.0%)</span></div>
+      </div>
+      <div style="margin-top:6px"><span style="color:#64748b;font-size:0.8em">Samples: </span><code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">1</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">2</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">3</code> </div>
+      
+      
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0">
+          <div class="stat-box"><div class="stat-label">Mean</div><div class="stat-val">25.5</div></div>
+          <div class="stat-box"><div class="stat-label">Median</div><div class="stat-val">25.5</div></div>
+          <div class="stat-box"><div class="stat-label">Std Dev</div><div class="stat-val">14.5774</div></div>
+          <div class="stat-box"><div class="stat-label">Min</div><div class="stat-val">1.0</div></div>
+          <div class="stat-box"><div class="stat-label">Q1</div><div class="stat-val">13.25</div></div>
+          <div class="stat-box"><div class="stat-label">Q3</div><div class="stat-val">37.75</div></div>
+          <div class="stat-box"><div class="stat-label">Max</div><div class="stat-val">50.0</div></div>
+          <div class="stat-box"><div class="stat-label">Outliers (IQR)</div>
+            <div class="stat-val" style="color:#22c55e">0</div></div>
+          <div class="stat-box"><div class="stat-label">Skewness</div>
+            <div class="stat-val"><span style="color:#22c55e;font-weight:600">+0.000</span> <span style="color:#22c55e;font-size:0.8em">(symmetric)</span></div></div>
+        </div>
+      
+        <div style="height:180px;margin-top:8px">
+          <canvas id="chart_0"></canvas>
+        </div>
+        <script>
+        (function(){
+          new Chart(document.getElementById('chart_0'), {
+            type: 'bar',
+            data: {
+              labels: ["1\u20135.9", "5.9\u201310.8", "10.8\u201315.7", "15.7\u201320.6", "20.6\u201325.5", "25.5\u201330.4", "30.4\u201335.3", "35.3\u201340.2", "40.2\u201345.1", "45.1\u201350"],
+              datasets: [{
+                data: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+                backgroundColor: 'rgba(34,211,238,0.7)',
+                borderColor: 'rgba(34,211,238,1)',
+                borderWidth: 1,
+                borderRadius: 3,
+              }]
+            },
+            options: {
+              responsive: true, maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { ticks: { color:'#94a3b8', font:{size:9}, maxRotation:45 },
+                       grid: { color:'#1e293b' } },
+                y: { ticks: { color:'#94a3b8' }, grid: { color:'#1e293b' } }
+              }
+            }
+          });
+        })();
+        </script>
+    </div>
+
+    <div class="col-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="margin:0;font-size:1rem;color:#f1f5f9">survived</h3>
+        <span style="background:#4ade80;color:#166534;padding:2px 8px;border-radius:9999px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em">BOOLEAN</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.85rem;color:#94a3b8;margin-bottom:10px">
+        <div>Missing: <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:120px;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+        <div style="width:0.0%;height:100%;background:#22c55e;border-radius:4px"></div>
+      </div>
+      <span style="color:#22c55e;font-weight:600">0.0%</span>
+      <span style="color:#64748b">(0/50)</span>
+    </div></div>
+        <div>Unique: <span style="color:#e2e8f0;font-weight:600">2</span>
+          <span style="color:#475569"> (4.0%)</span></div>
+      </div>
+      <div style="margin-top:6px"><span style="color:#64748b;font-size:0.8em">Samples: </span><code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">0</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">1</code> </div>
+      
+      
+      
+        <div style="height:200px;margin-top:12px">
+          <canvas id="chart_1"></canvas>
+        </div>
+        <script>
+        (function(){
+          new Chart(document.getElementById('chart_1'), {
+            type: 'bar',
+            data: {
+              labels: ["0", "1"],
+              datasets: [{
+                data: [28, 22],
+                backgroundColor: 'rgba(192,132,252,0.7)',
+                borderColor: 'rgba(192,132,252,1)',
+                borderWidth: 1,
+                borderRadius: 3,
+              }]
+            },
+            options: {
+              indexAxis: 'y',
+              responsive: true, maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { ticks: { color:'#94a3b8' }, grid: { color:'#1e293b' } },
+                y: { ticks: { color:'#94a3b8', font:{size:10} }, grid: { color:'#1e293b' } }
+              }
+            }
+          });
+        })();
+        </script>
+    </div>
+
+    <div class="col-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="margin:0;font-size:1rem;color:#f1f5f9">pclass</h3>
+        <span style="background:#22d3ee;color:#0e7490;padding:2px 8px;border-radius:9999px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em">NUMERIC</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.85rem;color:#94a3b8;margin-bottom:10px">
+        <div>Missing: <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:120px;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+        <div style="width:0.0%;height:100%;background:#22c55e;border-radius:4px"></div>
+      </div>
+      <span style="color:#22c55e;font-weight:600">0.0%</span>
+      <span style="color:#64748b">(0/50)</span>
+    </div></div>
+        <div>Unique: <span style="color:#e2e8f0;font-weight:600">3</span>
+          <span style="color:#475569"> (6.0%)</span></div>
+      </div>
+      <div style="margin-top:6px"><span style="color:#64748b;font-size:0.8em">Samples: </span><code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">3</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">1</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">2</code> </div>
+      
+      
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0">
+          <div class="stat-box"><div class="stat-label">Mean</div><div class="stat-val">2.44</div></div>
+          <div class="stat-box"><div class="stat-label">Median</div><div class="stat-val">3.0</div></div>
+          <div class="stat-box"><div class="stat-label">Std Dev</div><div class="stat-val">0.8122</div></div>
+          <div class="stat-box"><div class="stat-label">Min</div><div class="stat-val">1.0</div></div>
+          <div class="stat-box"><div class="stat-label">Q1</div><div class="stat-val">2.0</div></div>
+          <div class="stat-box"><div class="stat-label">Q3</div><div class="stat-val">3.0</div></div>
+          <div class="stat-box"><div class="stat-label">Max</div><div class="stat-val">3.0</div></div>
+          <div class="stat-box"><div class="stat-label">Outliers (IQR)</div>
+            <div class="stat-val" style="color:#22c55e">0</div></div>
+          <div class="stat-box"><div class="stat-label">Skewness</div>
+            <div class="stat-val"><span style="color:#fbbf24;font-weight:600">-0.930</span> <span style="color:#fbbf24;font-size:0.8em">(left skew)</span></div></div>
+        </div>
+      
+        <div style="height:180px;margin-top:8px">
+          <canvas id="chart_2"></canvas>
+        </div>
+        <script>
+        (function(){
+          new Chart(document.getElementById('chart_2'), {
+            type: 'bar',
+            data: {
+              labels: ["1\u20131.2", "1.2\u20131.4", "1.4\u20131.6", "1.6\u20131.8", "1.8\u20132", "2\u20132.2", "2.2\u20132.4", "2.4\u20132.6", "2.6\u20132.8", "2.8\u20133"],
+              datasets: [{
+                data: [10, 0, 0, 0, 0, 8, 0, 0, 0, 32],
+                backgroundColor: 'rgba(34,211,238,0.7)',
+                borderColor: 'rgba(34,211,238,1)',
+                borderWidth: 1,
+                borderRadius: 3,
+              }]
+            },
+            options: {
+              responsive: true, maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { ticks: { color:'#94a3b8', font:{size:9}, maxRotation:45 },
+                       grid: { color:'#1e293b' } },
+                y: { ticks: { color:'#94a3b8' }, grid: { color:'#1e293b' } }
+              }
+            }
+          });
+        })();
+        </script>
+    </div>
+
+    <div class="col-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="margin:0;font-size:1rem;color:#f1f5f9">name</h3>
+        <span style="background:#c084fc;color:#7e22ce;padding:2px 8px;border-radius:9999px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em">CATEGORICAL</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.85rem;color:#94a3b8;margin-bottom:10px">
+        <div>Missing: <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:120px;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+        <div style="width:0.0%;height:100%;background:#22c55e;border-radius:4px"></div>
+      </div>
+      <span style="color:#22c55e;font-weight:600">0.0%</span>
+      <span style="color:#64748b">(0/50)</span>
+    </div></div>
+        <div>Unique: <span style="color:#e2e8f0;font-weight:600">50</span>
+          <span style="color:#475569"> (100.0%)</span></div>
+      </div>
+      <div style="margin-top:6px"><span style="color:#64748b;font-size:0.8em">Samples: </span><code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">Braund, Mr. Owen Harris</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">Cumings, Mrs. John Bradley</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">Heikkinen, Miss. Laina</code> </div>
+      
+      
+      
+        <div style="height:200px;margin-top:12px">
+          <canvas id="chart_3"></canvas>
+        </div>
+        <script>
+        (function(){
+          new Chart(document.getElementById('chart_3'), {
+            type: 'bar',
+            data: {
+              labels: ["Braund, Mr. Owen Harris", "Cumings, Mrs. John Bradley", "Heikkinen, Miss. Laina", "Futrelle, Mrs. Jacques Heath", "Allen, Mr. William Henry", "Moran, Mr. James", "McCarthy, Mr. Timothy J", "Palsson, Master. Gosta Leonard"],
+              datasets: [{
+                data: [1, 1, 1, 1, 1, 1, 1, 1],
+                backgroundColor: 'rgba(192,132,252,0.7)',
+                borderColor: 'rgba(192,132,252,1)',
+                borderWidth: 1,
+                borderRadius: 3,
+              }]
+            },
+            options: {
+              indexAxis: 'y',
+              responsive: true, maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { ticks: { color:'#94a3b8' }, grid: { color:'#1e293b' } },
+                y: { ticks: { color:'#94a3b8', font:{size:10} }, grid: { color:'#1e293b' } }
+              }
+            }
+          });
+        })();
+        </script>
+    </div>
+
+    <div class="col-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="margin:0;font-size:1rem;color:#f1f5f9">sex</h3>
+        <span style="background:#c084fc;color:#7e22ce;padding:2px 8px;border-radius:9999px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em">CATEGORICAL</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.85rem;color:#94a3b8;margin-bottom:10px">
+        <div>Missing: <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:120px;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+        <div style="width:0.0%;height:100%;background:#22c55e;border-radius:4px"></div>
+      </div>
+      <span style="color:#22c55e;font-weight:600">0.0%</span>
+      <span style="color:#64748b">(0/50)</span>
+    </div></div>
+        <div>Unique: <span style="color:#e2e8f0;font-weight:600">2</span>
+          <span style="color:#475569"> (4.0%)</span></div>
+      </div>
+      <div style="margin-top:6px"><span style="color:#64748b;font-size:0.8em">Samples: </span><code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">male</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">female</code> </div>
+      
+      
+      
+        <div style="height:200px;margin-top:12px">
+          <canvas id="chart_4"></canvas>
+        </div>
+        <script>
+        (function(){
+          new Chart(document.getElementById('chart_4'), {
+            type: 'bar',
+            data: {
+              labels: ["male", "female"],
+              datasets: [{
+                data: [25, 25],
+                backgroundColor: 'rgba(192,132,252,0.7)',
+                borderColor: 'rgba(192,132,252,1)',
+                borderWidth: 1,
+                borderRadius: 3,
+              }]
+            },
+            options: {
+              indexAxis: 'y',
+              responsive: true, maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { ticks: { color:'#94a3b8' }, grid: { color:'#1e293b' } },
+                y: { ticks: { color:'#94a3b8', font:{size:10} }, grid: { color:'#1e293b' } }
+              }
+            }
+          });
+        })();
+        </script>
+    </div>
+
+    <div class="col-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="margin:0;font-size:1rem;color:#f1f5f9">age</h3>
+        <span style="background:#22d3ee;color:#0e7490;padding:2px 8px;border-radius:9999px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em">NUMERIC</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.85rem;color:#94a3b8;margin-bottom:10px">
+        <div>Missing: <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:120px;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+        <div style="width:28.0%;height:100%;background:#ef4444;border-radius:4px"></div>
+      </div>
+      <span style="color:#ef4444;font-weight:600">28.0%</span>
+      <span style="color:#64748b">(14/50)</span>
+    </div></div>
+        <div>Unique: <span style="color:#e2e8f0;font-weight:600">26</span>
+          <span style="color:#475569"> (72.2%)</span></div>
+      </div>
+      <div style="margin-top:6px"><span style="color:#64748b;font-size:0.8em">Samples: </span><code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">22</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">38</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">26</code> </div>
+      
+      
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0">
+          <div class="stat-box"><div class="stat-label">Mean</div><div class="stat-val">27.4722</div></div>
+          <div class="stat-box"><div class="stat-label">Median</div><div class="stat-val">27.0</div></div>
+          <div class="stat-box"><div class="stat-label">Std Dev</div><div class="stat-val">16.0027</div></div>
+          <div class="stat-box"><div class="stat-label">Min</div><div class="stat-val">2.0</div></div>
+          <div class="stat-box"><div class="stat-label">Q1</div><div class="stat-val">17.25</div></div>
+          <div class="stat-box"><div class="stat-label">Q3</div><div class="stat-val">38.0</div></div>
+          <div class="stat-box"><div class="stat-label">Max</div><div class="stat-val">66.0</div></div>
+          <div class="stat-box"><div class="stat-label">Outliers (IQR)</div>
+            <div class="stat-val" style="color:#22c55e">0</div></div>
+          <div class="stat-box"><div class="stat-label">Skewness</div>
+            <div class="stat-val"><span style="color:#22c55e;font-weight:600">+0.383</span> <span style="color:#22c55e;font-size:0.8em">(symmetric)</span></div></div>
+        </div>
+      
+        <div style="height:180px;margin-top:8px">
+          <canvas id="chart_5"></canvas>
+        </div>
+        <script>
+        (function(){
+          new Chart(document.getElementById('chart_5'), {
+            type: 'bar',
+            data: {
+              labels: ["2\u20138.4", "8.4\u201314.8", "14.8\u201321.2", "21.2\u201327.6", "27.6\u201334", "34\u201340.4", "40.4\u201346.8", "46.8\u201353.2", "53.2\u201359.6", "59.6\u201366"],
+              datasets: [{
+                data: [5, 3, 7, 4, 3, 9, 1, 0, 3, 1],
+                backgroundColor: 'rgba(34,211,238,0.7)',
+                borderColor: 'rgba(34,211,238,1)',
+                borderWidth: 1,
+                borderRadius: 3,
+              }]
+            },
+            options: {
+              responsive: true, maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { ticks: { color:'#94a3b8', font:{size:9}, maxRotation:45 },
+                       grid: { color:'#1e293b' } },
+                y: { ticks: { color:'#94a3b8' }, grid: { color:'#1e293b' } }
+              }
+            }
+          });
+        })();
+        </script>
+    </div>
+
+    <div class="col-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="margin:0;font-size:1rem;color:#f1f5f9">sibsp</h3>
+        <span style="background:#22d3ee;color:#0e7490;padding:2px 8px;border-radius:9999px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em">NUMERIC</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.85rem;color:#94a3b8;margin-bottom:10px">
+        <div>Missing: <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:120px;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+        <div style="width:0.0%;height:100%;background:#22c55e;border-radius:4px"></div>
+      </div>
+      <span style="color:#22c55e;font-weight:600">0.0%</span>
+      <span style="color:#64748b">(0/50)</span>
+    </div></div>
+        <div>Unique: <span style="color:#e2e8f0;font-weight:600">5</span>
+          <span style="color:#475569"> (10.0%)</span></div>
+      </div>
+      <div style="margin-top:6px"><span style="color:#64748b;font-size:0.8em">Samples: </span><code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">1</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">0</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">3</code> </div>
+      
+      
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0">
+          <div class="stat-box"><div class="stat-label">Mean</div><div class="stat-val">0.68</div></div>
+          <div class="stat-box"><div class="stat-label">Median</div><div class="stat-val">0.0</div></div>
+          <div class="stat-box"><div class="stat-label">Std Dev</div><div class="stat-val">0.957</div></div>
+          <div class="stat-box"><div class="stat-label">Min</div><div class="stat-val">0.0</div></div>
+          <div class="stat-box"><div class="stat-label">Q1</div><div class="stat-val">0.0</div></div>
+          <div class="stat-box"><div class="stat-label">Q3</div><div class="stat-val">1.0</div></div>
+          <div class="stat-box"><div class="stat-label">Max</div><div class="stat-val">4.0</div></div>
+          <div class="stat-box"><div class="stat-label">Outliers (IQR)</div>
+            <div class="stat-val" style="color:#ef4444">4</div></div>
+          <div class="stat-box"><div class="stat-label">Skewness</div>
+            <div class="stat-val"><span style="color:#ef4444;font-weight:600">+1.614</span> <span style="color:#ef4444;font-size:0.8em">(high right skew)</span></div></div>
+        </div>
+      
+        <div style="height:180px;margin-top:8px">
+          <canvas id="chart_6"></canvas>
+        </div>
+        <script>
+        (function(){
+          new Chart(document.getElementById('chart_6'), {
+            type: 'bar',
+            data: {
+              labels: ["0\u20130.4", "0.4\u20130.8", "0.8\u20131.2", "1.2\u20131.6", "1.6\u20132", "2\u20132.4", "2.4\u20132.8", "2.8\u20133.2", "3.2\u20133.6", "3.6\u20134"],
+              datasets: [{
+                data: [27, 0, 17, 0, 0, 2, 0, 3, 0, 1],
+                backgroundColor: 'rgba(34,211,238,0.7)',
+                borderColor: 'rgba(34,211,238,1)',
+                borderWidth: 1,
+                borderRadius: 3,
+              }]
+            },
+            options: {
+              responsive: true, maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { ticks: { color:'#94a3b8', font:{size:9}, maxRotation:45 },
+                       grid: { color:'#1e293b' } },
+                y: { ticks: { color:'#94a3b8' }, grid: { color:'#1e293b' } }
+              }
+            }
+          });
+        })();
+        </script>
+    </div>
+
+    <div class="col-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="margin:0;font-size:1rem;color:#f1f5f9">parch</h3>
+        <span style="background:#22d3ee;color:#0e7490;padding:2px 8px;border-radius:9999px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em">NUMERIC</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.85rem;color:#94a3b8;margin-bottom:10px">
+        <div>Missing: <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:120px;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+        <div style="width:0.0%;height:100%;background:#22c55e;border-radius:4px"></div>
+      </div>
+      <span style="color:#22c55e;font-weight:600">0.0%</span>
+      <span style="color:#64748b">(0/50)</span>
+    </div></div>
+        <div>Unique: <span style="color:#e2e8f0;font-weight:600">4</span>
+          <span style="color:#475569"> (8.0%)</span></div>
+      </div>
+      <div style="margin-top:6px"><span style="color:#64748b;font-size:0.8em">Samples: </span><code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">0</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">1</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">2</code> </div>
+      
+      
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0">
+          <div class="stat-box"><div class="stat-label">Mean</div><div class="stat-val">0.4</div></div>
+          <div class="stat-box"><div class="stat-label">Median</div><div class="stat-val">0.0</div></div>
+          <div class="stat-box"><div class="stat-label">Std Dev</div><div class="stat-val">1.088</div></div>
+          <div class="stat-box"><div class="stat-label">Min</div><div class="stat-val">0.0</div></div>
+          <div class="stat-box"><div class="stat-label">Q1</div><div class="stat-val">0.0</div></div>
+          <div class="stat-box"><div class="stat-label">Q3</div><div class="stat-val">0.0</div></div>
+          <div class="stat-box"><div class="stat-label">Max</div><div class="stat-val">5.0</div></div>
+          <div class="stat-box"><div class="stat-label">Outliers (IQR)</div>
+            <div class="stat-val" style="color:#ef4444">9</div></div>
+          <div class="stat-box"><div class="stat-label">Skewness</div>
+            <div class="stat-val"><span style="color:#ef4444;font-weight:600">+3.187</span> <span style="color:#ef4444;font-size:0.8em">(high right skew)</span></div></div>
+        </div>
+      
+        <div style="height:180px;margin-top:8px">
+          <canvas id="chart_7"></canvas>
+        </div>
+        <script>
+        (function(){
+          new Chart(document.getElementById('chart_7'), {
+            type: 'bar',
+            data: {
+              labels: ["0\u20130.5", "0.5\u20131", "1\u20131.5", "1.5\u20132", "2\u20132.5", "2.5\u20133", "3\u20133.5", "3.5\u20134", "4\u20134.5", "4.5\u20135"],
+              datasets: [{
+                data: [41, 0, 4, 0, 3, 0, 0, 0, 0, 2],
+                backgroundColor: 'rgba(34,211,238,0.7)',
+                borderColor: 'rgba(34,211,238,1)',
+                borderWidth: 1,
+                borderRadius: 3,
+              }]
+            },
+            options: {
+              responsive: true, maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { ticks: { color:'#94a3b8', font:{size:9}, maxRotation:45 },
+                       grid: { color:'#1e293b' } },
+                y: { ticks: { color:'#94a3b8' }, grid: { color:'#1e293b' } }
+              }
+            }
+          });
+        })();
+        </script>
+    </div>
+
+    <div class="col-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="margin:0;font-size:1rem;color:#f1f5f9">fare</h3>
+        <span style="background:#22d3ee;color:#0e7490;padding:2px 8px;border-radius:9999px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em">NUMERIC</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.85rem;color:#94a3b8;margin-bottom:10px">
+        <div>Missing: <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:120px;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+        <div style="width:0.0%;height:100%;background:#22c55e;border-radius:4px"></div>
+      </div>
+      <span style="color:#22c55e;font-weight:600">0.0%</span>
+      <span style="color:#64748b">(0/50)</span>
+    </div></div>
+        <div>Unique: <span style="color:#e2e8f0;font-weight:600">40</span>
+          <span style="color:#475569"> (80.0%)</span></div>
+      </div>
+      <div style="margin-top:6px"><span style="color:#64748b;font-size:0.8em">Samples: </span><code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">7.25</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">71.2833</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">7.925</code> </div>
+      
+      
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0">
+          <div class="stat-box"><div class="stat-label">Mean</div><div class="stat-val">27.8954</div></div>
+          <div class="stat-box"><div class="stat-label">Median</div><div class="stat-val">15.75</div></div>
+          <div class="stat-box"><div class="stat-label">Std Dev</div><div class="stat-val">41.9076</div></div>
+          <div class="stat-box"><div class="stat-label">Min</div><div class="stat-val">7.225</div></div>
+          <div class="stat-box"><div class="stat-label">Q1</div><div class="stat-val">8.0344</div></div>
+          <div class="stat-box"><div class="stat-label">Q3</div><div class="stat-val">28.7739</div></div>
+          <div class="stat-box"><div class="stat-label">Max</div><div class="stat-val">263.0</div></div>
+          <div class="stat-box"><div class="stat-label">Outliers (IQR)</div>
+            <div class="stat-val" style="color:#ef4444">4</div></div>
+          <div class="stat-box"><div class="stat-label">Skewness</div>
+            <div class="stat-val"><span style="color:#ef4444;font-weight:600">+4.014</span> <span style="color:#ef4444;font-size:0.8em">(high right skew)</span></div></div>
+        </div>
+      
+        <div style="height:180px;margin-top:8px">
+          <canvas id="chart_8"></canvas>
+        </div>
+        <script>
+        (function(){
+          new Chart(document.getElementById('chart_8'), {
+            type: 'bar',
+            data: {
+              labels: ["7.22\u201332.8", "32.8\u201358.4", "58.4\u201384", "84\u2013110", "110\u2013135", "135\u2013161", "161\u2013186", "186\u2013212", "212\u2013237", "237\u2013263"],
+              datasets: [{
+                data: [41, 5, 2, 0, 0, 1, 0, 0, 0, 1],
+                backgroundColor: 'rgba(34,211,238,0.7)',
+                borderColor: 'rgba(34,211,238,1)',
+                borderWidth: 1,
+                borderRadius: 3,
+              }]
+            },
+            options: {
+              responsive: true, maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { ticks: { color:'#94a3b8', font:{size:9}, maxRotation:45 },
+                       grid: { color:'#1e293b' } },
+                y: { ticks: { color:'#94a3b8' }, grid: { color:'#1e293b' } }
+              }
+            }
+          });
+        })();
+        </script>
+    </div>
+
+    <div class="col-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="margin:0;font-size:1rem;color:#f1f5f9">embarked</h3>
+        <span style="background:#c084fc;color:#7e22ce;padding:2px 8px;border-radius:9999px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em">CATEGORICAL</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.85rem;color:#94a3b8;margin-bottom:10px">
+        <div>Missing: <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:120px;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+        <div style="width:0.0%;height:100%;background:#22c55e;border-radius:4px"></div>
+      </div>
+      <span style="color:#22c55e;font-weight:600">0.0%</span>
+      <span style="color:#64748b">(0/50)</span>
+    </div></div>
+        <div>Unique: <span style="color:#e2e8f0;font-weight:600">3</span>
+          <span style="color:#475569"> (6.0%)</span></div>
+      </div>
+      <div style="margin-top:6px"><span style="color:#64748b;font-size:0.8em">Samples: </span><code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">S</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">C</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">Q</code> </div>
+      
+      
+      
+        <div style="height:200px;margin-top:12px">
+          <canvas id="chart_9"></canvas>
+        </div>
+        <script>
+        (function(){
+          new Chart(document.getElementById('chart_9'), {
+            type: 'bar',
+            data: {
+              labels: ["S", "C", "Q"],
+              datasets: [{
+                data: [30, 12, 8],
+                backgroundColor: 'rgba(192,132,252,0.7)',
+                borderColor: 'rgba(192,132,252,1)',
+                borderWidth: 1,
+                borderRadius: 3,
+              }]
+            },
+            options: {
+              indexAxis: 'y',
+              responsive: true, maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { ticks: { color:'#94a3b8' }, grid: { color:'#1e293b' } },
+                y: { ticks: { color:'#94a3b8', font:{size:10} }, grid: { color:'#1e293b' } }
+              }
+            }
+          });
+        })();
+        </script>
+    </div>
+
+    <div class="col-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="margin:0;font-size:1rem;color:#f1f5f9">cabin</h3>
+        <span style="background:#c084fc;color:#7e22ce;padding:2px 8px;border-radius:9999px;font-size:0.7rem;font-weight:700;letter-spacing:0.05em">CATEGORICAL</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.85rem;color:#94a3b8;margin-bottom:10px">
+        <div>Missing: <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:120px;height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+        <div style="width:82.0%;height:100%;background:#ef4444;border-radius:4px"></div>
+      </div>
+      <span style="color:#ef4444;font-weight:600">82.0%</span>
+      <span style="color:#64748b">(41/50)</span>
+    </div></div>
+        <div>Unique: <span style="color:#e2e8f0;font-weight:600">10</span>
+          <span style="color:#475569"> (111.1%)</span></div>
+      </div>
+      <div style="margin-top:6px"><span style="color:#64748b;font-size:0.8em">Samples: </span><code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">C85</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">C123</code> <code style="background:#1e293b;padding:2px 6px;border-radius:4px;font-size:0.8em;color:#94a3b8">E46</code> </div>
+      
+      
+      
+        <div style="height:200px;margin-top:12px">
+          <canvas id="chart_10"></canvas>
+        </div>
+        <script>
+        (function(){
+          new Chart(document.getElementById('chart_10'), {
+            type: 'bar',
+            data: {
+              labels: ["C85", "C123", "E46", "G6", "C103", "D56", "A6", "C23"],
+              datasets: [{
+                data: [1, 1, 1, 1, 1, 1, 1, 1],
+                backgroundColor: 'rgba(192,132,252,0.7)',
+                borderColor: 'rgba(192,132,252,1)',
+                borderWidth: 1,
+                borderRadius: 3,
+              }]
+            },
+            options: {
+              indexAxis: 'y',
+              responsive: true, maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { ticks: { color:'#94a3b8' }, grid: { color:'#1e293b' } },
+                y: { ticks: { color:'#94a3b8', font:{size:10} }, grid: { color:'#1e293b' } }
+              }
+            }
+          });
+        })();
+        </script>
+    </div>
+  </div>
+</div>
+
+<div class="footer">ds-profile · zero dependencies · pure Python stdlib</div>
+
+</body>
+</html>

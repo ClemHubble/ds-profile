@@ -1,0 +1,5 @@
+id,name,age,salary
+1,Alice,29,70000
+2,Bob,N/A,-999
+3,Charlie,?,40000
+4,,45,120000

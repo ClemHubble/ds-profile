@@ -55,6 +55,10 @@ ds-profile data.csv
 ## Examples
 
 ```bash
+# Note: example CSVs are in the `tests/` folder. Either prefix filenames with
+# `tests/` when running from the project root, or `cd tests` first and run the
+# commands exactly as shown below.
+
 # Full profile of a CSV
 ds-profile titanic.csv
 
@@ -88,8 +92,8 @@ ds-profile titanic.csv --output json --export profile.json
 # Save warn output to a file
 ds-profile titanic.csv --warn --export issues.txt
 
-# Fast mode for large files — sample 5,000 rows
-ds-profile big_data.csv --sample 5000
+# Fast mode for large files — sample 250 rows
+ds-profile big_data.csv --sample 250
 
 # Export as JSON and query with jq
 ds-profile titanic.csv --output json | jq '.columns[].name'
@@ -291,3 +295,16 @@ No pandas, no numpy, no rich, no click. Installs in under a second and runs on a
 ## License
 
 MIT
+
+## Included example CSVs (in `tests/`)
+
+The repository includes small example CSV files referenced in the usage examples above. They are located in the `tests/` folder — run the CLI with the `tests/` path or change into `tests/` first:
+
+- [tests/titanic.csv](tests/titanic.csv) — sample Titanic dataset (50 rows)
+- [tests/train.csv](tests/train.csv) and [tests/test.csv](tests/test.csv) — example train/test files (same sample data)
+- [tests/data.csv](tests/data.csv) — small generic tabular example
+- [tests/big_data.csv](tests/big_data.csv) — small representative "big" file for sampling examples
+- [tests/data_v1.csv](tests/data_v1.csv) and [tests/data_v2.csv](tests/data_v2.csv) — paired files for `--diff` examples
+- [tests/data_before_cleaning.csv](tests/data_before_cleaning.csv) and [tests/data_after_cleaning.csv](tests/data_after_cleaning.csv) — sentinel/cleaning examples
+
+Examples in this README referencing plain filenames (e.g. `titanic.csv`) assume you are in the `tests/` directory; either run `ds-profile tests/titanic.csv` from the project root or `cd tests && ds-profile titanic.csv`.
