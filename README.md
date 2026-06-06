@@ -29,7 +29,7 @@ Requires Python 3.9 or later. No other dependencies.
 ## Usage
 
 ```bash
-ds-profile data.csv
+uv run ds-profile data.csv
 ```
 
 ### All Options
@@ -60,51 +60,51 @@ ds-profile data.csv
 # commands exactly as shown below.
 
 # Full profile of a CSV
-ds-profile titanic.csv
+uv run ds-profile titanic.csv
 
 # One-line-per-column overview — great for wide datasets
-ds-profile titanic.csv --summary
+uv run ds-profile titanic.csv --summary
 
 # Data quality issues only — triage before modeling
-ds-profile titanic.csv --warn
+uv run ds-profile titanic.csv --warn
 
 # Preview the first 10 rows as a formatted table
-ds-profile titanic.csv --head
+uv run ds-profile titanic.csv --head
 
 # Preview the first 20 rows
-ds-profile titanic.csv --head 20
+uv run ds-profile titanic.csv --head 20
 
 # Quick summary — no histograms, fast scan
-ds-profile titanic.csv --compact
+uv run ds-profile titanic.csv --compact
 
 # Only profile specific columns
-ds-profile titanic.csv --cols age,fare,survived
+uv run ds-profile titanic.csv --cols age,fare,survived
 
 # Save a plain-text report to a file
-ds-profile titanic.csv --export report.txt
+uv run ds-profile titanic.csv --export report.txt
 
 # Save an HTML report to a file
-ds-profile titanic.csv --output html --export report.html
+uv run ds-profile titanic.csv --output html --export report.html
 
 # Save a JSON profile to a file
-ds-profile titanic.csv --output json --export profile.json
+uv run ds-profile titanic.csv --output json --export profile.json
 
 # Save warn output to a file
-ds-profile titanic.csv --warn --export issues.txt
+uv run ds-profile titanic.csv --warn --export issues.txt
 
 # Fast mode for large files — sample 250 rows
-ds-profile big_data.csv --sample 250
+uv run ds-profile big_data.csv --sample 250
 
 # Export as JSON and query with jq
-ds-profile titanic.csv --output json | jq '.columns[].name'
-ds-profile titanic.csv --output json > profile.json
+uv run ds-profile titanic.csv --output json | jq '.columns[].name'
+uv run ds-profile titanic.csv --output json > profile.json
 
 # Generate a shareable HTML report
-ds-profile titanic.csv --output html > report.html
+uv run ds-profile titanic.csv --output html > report.html
 
 # Compare two versions of a dataset
-ds-profile train.csv --diff test.csv
-ds-profile data_v1.csv --diff data_v2.csv
+uv run ds-profile train.csv --diff test.csv
+uv run ds-profile data_v1.csv --diff data_v2.csv
 ```
 
 ---
@@ -134,8 +134,8 @@ ds-profile data_v1.csv --diff data_v2.csv
 Prints the first N rows of the CSV as a clean formatted table — the terminal equivalent of `df.head()`. Empty and null-like values are dimmed for easy spotting. If the dataset is too wide for the terminal, it shows as many columns as fit and tells you how many were hidden.
 
 ```bash
-ds-profile data.csv --head        # first 10 rows (default)
-ds-profile data.csv --head 25     # first 25 rows
+uv run ds-profile data.csv --head        # first 10 rows (default)
+uv run ds-profile data.csv --head 25     # first 25 rows
 ```
 
 ### `--export FILE` — Save to File
@@ -143,11 +143,11 @@ ds-profile data.csv --head 25     # first 25 rows
 Saves the output directly to a file instead of printing to the terminal. Works with every mode — terminal profile, summary, warn, diff, JSON, and HTML. Plain-text formats (terminal, summary, warn, diff) are automatically stripped of ANSI color codes when exported. The file extension doesn't need to match — you choose it.
 
 ```bash
-ds-profile data.csv --export report.txt               # plain text profile
-ds-profile data.csv --output html --export report.html  # HTML report
-ds-profile data.csv --output json --export profile.json # JSON
-ds-profile data.csv --warn --export issues.txt        # quality report
-ds-profile data.csv --summary --export summary.txt    # summary table
+uv run ds-profile data.csv --export report.txt               # plain text profile
+uv run ds-profile data.csv --output html --export report.html  # HTML report
+uv run ds-profile data.csv --output json --export profile.json # JSON
+uv run ds-profile data.csv --warn --export issues.txt        # quality report
+uv run ds-profile data.csv --summary --export summary.txt    # summary table
 ```
 
 A confirmation message is printed to stderr after saving:
@@ -162,7 +162,7 @@ A compact one-line-per-column table giving instant orientation — ideal when yo
 Each row shows: column name, inferred type, missing %, unique count, and a type-aware summary (mean/range/skew for numeric, top value + category count for categorical). Sentinel warnings (⚠) are flagged inline. A quick issue count at the bottom tells you whether to run `--warn` next.
 
 ```bash
-ds-profile data.csv --summary
+uv run ds-profile data.csv --summary
 ```
 
 ### `--warn` — Data Quality Report
@@ -181,17 +181,17 @@ Checks for:
 Each issue is classified as **error** or **warning**, and the report closes with a "Suggested Fixes" section mapping each issue code to a concrete pandas/sklearn remedy.
 
 ```bash
-ds-profile data.csv --warn
+uv run ds-profile data.csv --warn
 ```
 
 ### Recommended workflow
 
 ```bash
-ds-profile data.csv --head          # see what the raw data looks like
-ds-profile data.csv --summary       # orient — what columns do I have?
-ds-profile data.csv --warn          # find problems before preprocessing
-ds-profile data.csv --cols age,fare # drill into suspicious columns
-ds-profile data.csv --output html --export report.html  # share with teammates
+uv run ds-profile data.csv --head          # see what the raw data looks like
+uv run ds-profile data.csv --summary       # orient — what columns do I have?
+uv run ds-profile data.csv --warn          # find problems before preprocessing
+uv run ds-profile data.csv --cols age,fare # drill into suspicious columns
+uv run ds-profile data.csv --output html --export report.html  # share with teammates
 ```
 - Row count, column count, file size
 - Duplicate row count
@@ -226,13 +226,13 @@ Exports the complete profile as structured JSON — every stat, histogram bins a
 
 ```bash
 # Save a baseline profile
-ds-profile data.csv --output json > baseline.json
+uv run ds-profile data.csv --output json > baseline.json
 
 # Extract just column names
-ds-profile data.csv --output json | jq '[.columns[].name]'
+uv run ds-profile data.csv --output json | jq '[.columns[].name]'
 
 # Find columns with high missing rates
-ds-profile data.csv --output json | jq '[.columns[] | select(.missing_pct > 20)]'
+uv run ds-profile data.csv --output json | jq '[.columns[] | select(.missing_pct > 20)]'
 ```
 
 ### `--output html`
@@ -240,7 +240,7 @@ ds-profile data.csv --output json | jq '[.columns[] | select(.missing_pct > 20)]
 Generates a fully self-contained dark-themed HTML report — one file, no server needed, works offline after the first load (Chart.js loads from CDN).
 
 ```bash
-ds-profile titanic.csv --output html > report.html
+uv run ds-profile titanic.csv --output html > report.html
 open report.html   # macOS
 xdg-open report.html   # Linux
 ```
@@ -259,8 +259,8 @@ The HTML report includes:
 Compare two CSVs and see exactly what changed between them. Useful for checking train vs test set drift, validating data pipeline outputs, or tracking dataset versions.
 
 ```bash
-ds-profile train.csv --diff test.csv
-ds-profile data_before_cleaning.csv --diff data_after_cleaning.csv
+uv run ds-profile train.csv --diff test.csv
+uv run ds-profile data_before_cleaning.csv --diff data_after_cleaning.csv
 ```
 
 The diff report shows:
