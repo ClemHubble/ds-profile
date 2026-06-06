@@ -1,0 +1,6 @@
+age,income,status
+25,50000,active
+N/A,75000,unknown
+30,?,active
+-999,90000,N/A
+40,null,active
