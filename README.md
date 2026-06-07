@@ -10,13 +10,42 @@ Every data science workflow starts the same way: open a new dataset, run `.head(
 
 ## Installation
 
-Install directly from GitHub using `uv`:
+### Recommended — install as a global CLI tool
+
+This makes `ds-profile` available as a command anywhere on your system:
+
+```bash
+uv tool install "git+https://github.com/<your-username>/ds-profile.git"
+```
+
+Then run it directly from any directory:
+
+```bash
+ds-profile data.csv
+```
+
+If `ds-profile` is not found after installing, run this once to add uv's tool bin to your shell PATH:
+
+```bash
+uv tool update-shell
+source ~/.zshrc   # or ~/.bashrc depending on your shell
+```
+
+### Alternative — install into a specific project
+
+If you want `ds-profile` scoped to a particular project's virtualenv:
 
 ```bash
 uv add "git+https://github.com/<your-username>/ds-profile.git"
 ```
 
-Or with pip:
+With this approach, prefix commands with `uv run`:
+
+```bash
+uv run ds-profile data.csv
+```
+
+### With pip
 
 ```bash
 pip install "git+https://github.com/<your-username>/ds-profile.git"
@@ -24,12 +53,14 @@ pip install "git+https://github.com/<your-username>/ds-profile.git"
 
 Requires Python 3.9 or later. No other dependencies.
 
+> **Note:** `ds-profile` works on any CSV file you point it at. The GitHub repository contains sample CSVs in `tests/` for development, but they are not included when the package is installed — just bring your own data file.
+
 ---
 
 ## Usage
 
 ```bash
-uv run ds-profile data.csv
+ds-profile data.csv
 ```
 
 ### All Options
@@ -55,56 +86,52 @@ uv run ds-profile data.csv
 ## Examples
 
 ```bash
-# Note: example CSVs are in the `tests/` folder. Either prefix filenames with
-# `tests/` when running from the project root, or `cd tests` first and run the
-# commands exactly as shown below.
-
 # Full profile of a CSV
-uv run ds-profile titanic.csv
+ds-profile titanic.csv
 
 # One-line-per-column overview — great for wide datasets
-uv run ds-profile titanic.csv --summary
+ds-profile titanic.csv --summary
 
 # Data quality issues only — triage before modeling
-uv run ds-profile titanic.csv --warn
+ds-profile titanic.csv --warn
 
 # Preview the first 10 rows as a formatted table
-uv run ds-profile titanic.csv --head
+ds-profile titanic.csv --head
 
 # Preview the first 20 rows
-uv run ds-profile titanic.csv --head 20
+ds-profile titanic.csv --head 20
 
 # Quick summary — no histograms, fast scan
-uv run ds-profile titanic.csv --compact
+ds-profile titanic.csv --compact
 
 # Only profile specific columns
-uv run ds-profile titanic.csv --cols age,fare,survived
+ds-profile titanic.csv --cols age,fare,survived
 
 # Save a plain-text report to a file
-uv run ds-profile titanic.csv --export report.txt
+ds-profile titanic.csv --export report.txt
 
 # Save an HTML report to a file
-uv run ds-profile titanic.csv --output html --export report.html
+ds-profile titanic.csv --output html --export report.html
 
 # Save a JSON profile to a file
-uv run ds-profile titanic.csv --output json --export profile.json
+ds-profile titanic.csv --output json --export profile.json
 
 # Save warn output to a file
-uv run ds-profile titanic.csv --warn --export issues.txt
+ds-profile titanic.csv --warn --export issues.txt
 
-# Fast mode for large files — sample 250 rows
-uv run ds-profile big_data.csv --sample 250
+# Fast mode for large files — sample 5,000 rows
+ds-profile big_data.csv --sample 5000
 
 # Export as JSON and query with jq
-uv run ds-profile titanic.csv --output json | jq '.columns[].name'
-uv run ds-profile titanic.csv --output json > profile.json
+ds-profile titanic.csv --output json | jq '.columns[].name'
+ds-profile titanic.csv --output json > profile.json
 
 # Generate a shareable HTML report
-uv run ds-profile titanic.csv --output html > report.html
+ds-profile titanic.csv --output html > report.html
 
 # Compare two versions of a dataset
-uv run ds-profile train.csv --diff test.csv
-uv run ds-profile data_v1.csv --diff data_v2.csv
+ds-profile train.csv --diff test.csv
+ds-profile data_v1.csv --diff data_v2.csv
 ```
 
 ---
@@ -134,8 +161,8 @@ uv run ds-profile data_v1.csv --diff data_v2.csv
 Prints the first N rows of the CSV as a clean formatted table — the terminal equivalent of `df.head()`. Empty and null-like values are dimmed for easy spotting. If the dataset is too wide for the terminal, it shows as many columns as fit and tells you how many were hidden.
 
 ```bash
-uv run ds-profile data.csv --head        # first 10 rows (default)
-uv run ds-profile data.csv --head 25     # first 25 rows
+ds-profile data.csv --head        # first 10 rows (default)
+ds-profile data.csv --head 25     # first 25 rows
 ```
 
 ### `--export FILE` — Save to File
@@ -143,11 +170,11 @@ uv run ds-profile data.csv --head 25     # first 25 rows
 Saves the output directly to a file instead of printing to the terminal. Works with every mode — terminal profile, summary, warn, diff, JSON, and HTML. Plain-text formats (terminal, summary, warn, diff) are automatically stripped of ANSI color codes when exported. The file extension doesn't need to match — you choose it.
 
 ```bash
-uv run ds-profile data.csv --export report.txt               # plain text profile
-uv run ds-profile data.csv --output html --export report.html  # HTML report
-uv run ds-profile data.csv --output json --export profile.json # JSON
-uv run ds-profile data.csv --warn --export issues.txt        # quality report
-uv run ds-profile data.csv --summary --export summary.txt    # summary table
+ds-profile data.csv --export report.txt               # plain text profile
+ds-profile data.csv --output html --export report.html  # HTML report
+ds-profile data.csv --output json --export profile.json # JSON
+ds-profile data.csv --warn --export issues.txt        # quality report
+ds-profile data.csv --summary --export summary.txt    # summary table
 ```
 
 A confirmation message is printed to stderr after saving:
@@ -162,7 +189,7 @@ A compact one-line-per-column table giving instant orientation — ideal when yo
 Each row shows: column name, inferred type, missing %, unique count, and a type-aware summary (mean/range/skew for numeric, top value + category count for categorical). Sentinel warnings (⚠) are flagged inline. A quick issue count at the bottom tells you whether to run `--warn` next.
 
 ```bash
-uv run ds-profile data.csv --summary
+ds-profile data.csv --summary
 ```
 
 ### `--warn` — Data Quality Report
@@ -181,17 +208,17 @@ Checks for:
 Each issue is classified as **error** or **warning**, and the report closes with a "Suggested Fixes" section mapping each issue code to a concrete pandas/sklearn remedy.
 
 ```bash
-uv run ds-profile data.csv --warn
+ds-profile data.csv --warn
 ```
 
 ### Recommended workflow
 
 ```bash
-uv run ds-profile data.csv --head          # see what the raw data looks like
-uv run ds-profile data.csv --summary       # orient — what columns do I have?
-uv run ds-profile data.csv --warn          # find problems before preprocessing
-uv run ds-profile data.csv --cols age,fare # drill into suspicious columns
-uv run ds-profile data.csv --output html --export report.html  # share with teammates
+ds-profile data.csv --head          # see what the raw data looks like
+ds-profile data.csv --summary       # orient — what columns do I have?
+ds-profile data.csv --warn          # find problems before preprocessing
+ds-profile data.csv --cols age,fare # drill into suspicious columns
+ds-profile data.csv --output html --export report.html  # share with teammates
 ```
 - Row count, column count, file size
 - Duplicate row count
@@ -226,13 +253,13 @@ Exports the complete profile as structured JSON — every stat, histogram bins a
 
 ```bash
 # Save a baseline profile
-uv run ds-profile data.csv --output json > baseline.json
+ds-profile data.csv --output json > baseline.json
 
 # Extract just column names
-uv run ds-profile data.csv --output json | jq '[.columns[].name]'
+ds-profile data.csv --output json | jq '[.columns[].name]'
 
 # Find columns with high missing rates
-uv run ds-profile data.csv --output json | jq '[.columns[] | select(.missing_pct > 20)]'
+ds-profile data.csv --output json | jq '[.columns[] | select(.missing_pct > 20)]'
 ```
 
 ### `--output html`
@@ -240,7 +267,7 @@ uv run ds-profile data.csv --output json | jq '[.columns[] | select(.missing_pct
 Generates a fully self-contained dark-themed HTML report — one file, no server needed, works offline after the first load (Chart.js loads from CDN).
 
 ```bash
-uv run ds-profile titanic.csv --output html > report.html
+ds-profile titanic.csv --output html > report.html
 open report.html   # macOS
 xdg-open report.html   # Linux
 ```
@@ -259,8 +286,8 @@ The HTML report includes:
 Compare two CSVs and see exactly what changed between them. Useful for checking train vs test set drift, validating data pipeline outputs, or tracking dataset versions.
 
 ```bash
-uv run ds-profile train.csv --diff test.csv
-uv run ds-profile data_before_cleaning.csv --diff data_after_cleaning.csv
+ds-profile train.csv --diff test.csv
+ds-profile data_before_cleaning.csv --diff data_after_cleaning.csv
 ```
 
 The diff report shows:
@@ -295,16 +322,3 @@ No pandas, no numpy, no rich, no click. Installs in under a second and runs on a
 ## License
 
 MIT
-
-## Included example CSVs (in `tests/`)
-
-The repository includes small example CSV files referenced in the usage examples above. They are located in the `tests/` folder — run the CLI with the `tests/` path or change into `tests/` first:
-
-- [tests/titanic.csv](tests/titanic.csv) — sample Titanic dataset (50 rows)
-- [tests/train.csv](tests/train.csv) and [tests/test.csv](tests/test.csv) — example train/test files (same sample data)
-- [tests/data.csv](tests/data.csv) — small generic tabular example
-- [tests/big_data.csv](tests/big_data.csv) — small representative "big" file for sampling examples
-- [tests/data_v1.csv](tests/data_v1.csv) and [tests/data_v2.csv](tests/data_v2.csv) — paired files for `--diff` examples
-- [tests/data_before_cleaning.csv](tests/data_before_cleaning.csv) and [tests/data_after_cleaning.csv](tests/data_after_cleaning.csv) — sentinel/cleaning examples
-
-Examples in this README referencing plain filenames (e.g. `titanic.csv`) assume you are in the `tests/` directory; either run `ds-profile tests/titanic.csv` from the project root or `cd tests && ds-profile titanic.csv`.
