@@ -6,7 +6,7 @@ import math
 import os
 import statistics
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 import csv
 
@@ -18,26 +18,26 @@ class ColumnProfile:
     count: int
     missing: int
     unique: int
-    sample_values: list[Any]
+    sample_values: List[Any]
 
     # numeric only
-    mean: float | None = None
-    median: float | None = None
-    std: float | None = None
-    min_val: float | None = None
-    max_val: float | None = None
-    q1: float | None = None
-    q3: float | None = None
-    skewness: float | None = None
+    mean: Optional[float] = None
+    median: Optional[float] = None
+    std: Optional[float] = None
+    min_val: Optional[float] = None
+    max_val: Optional[float] = None
+    q1: Optional[float] = None
+    q3: Optional[float] = None
+    skewness: Optional[float] = None
     outlier_count: int = 0
-    histogram: list[int] = field(default_factory=list)
-    histogram_edges: list[float] = field(default_factory=list)
+    histogram: List[int] = field(default_factory=list)
+    histogram_edges: List[float] = field(default_factory=list)
 
     # categorical only
-    top_values: list[tuple[str, int]] = field(default_factory=list)
+    top_values: List[Tuple[str, int]] = field(default_factory=list)
 
     # data quality
-    sentinels: dict[str, int] = field(default_factory=dict)  # sentinel_str -> count
+    sentinels: Dict[str, int] = field(default_factory=dict)  # sentinel_str -> count
 
 
 @dataclass
@@ -46,12 +46,12 @@ class DatasetProfile:
     total_rows: int
     total_cols: int
     file_size_bytes: int
-    columns: list[ColumnProfile]
+    columns: List[ColumnProfile]
     duplicate_rows: int = 0
     sampled: bool = False
-    sample_size: int | None = None
+    sample_size: Optional[int] = None
     # col_name -> col_name -> pearson r
-    correlation: dict[str, dict[str, float]] = field(default_factory=dict)
+    correlation: Dict[str, Dict[str, float]] = field(default_factory=dict)
 
     def to_json(self) -> str:
         """Serialize the full profile to a JSON string."""
@@ -95,15 +95,15 @@ class DatasetProfile:
             indent=2,
         )
 
-    def warn_issues(self) -> list[dict]:
+    def warn_issues(self) -> List[Dict[str, Any]]:
         """
         Return a list of data quality warnings across all columns.
-        Each warning is a dict with keys: column, severity, code, message.
-        Severity: "error" | "warning" | "info"
+         Each warning is a dict with keys: column, severity, code, message.
+         Severity is one of: error, warning, info.
         Codes: high_missing, constant_col, high_skew, high_outliers,
                sentinels, high_cardinality, duplicate_rows
         """
-        issues: list[dict] = []
+        issues: List[Dict[str, Any]] = []
 
         # Dataset-level
         if self.duplicate_rows > 0:
@@ -217,17 +217,17 @@ class DatasetProfile:
 class ColumnDiff:
     name: str
     status: str  # "added", "removed", "changed", "same"
-    dtype_a: str | None = None
-    dtype_b: str | None = None
+    dtype_a: Optional[str] = None
+    dtype_b: Optional[str] = None
     # numeric shifts
-    mean_a: float | None = None
-    mean_b: float | None = None
-    std_a: float | None = None
-    std_b: float | None = None
-    missing_pct_a: float | None = None
-    missing_pct_b: float | None = None
+    mean_a: Optional[float] = None
+    mean_b: Optional[float] = None
+    std_a: Optional[float] = None
+    std_b: Optional[float] = None
+    missing_pct_a: Optional[float] = None
+    missing_pct_b: Optional[float] = None
     # distribution shift (overlap of histograms, 0=no overlap 1=identical)
-    histogram_overlap: float | None = None
+    histogram_overlap: Optional[float] = None
 
 
 @dataclass
@@ -238,22 +238,22 @@ class DiffResult:
     rows_b: int
     cols_a: int
     cols_b: int
-    columns: list[ColumnDiff]
+    columns: List[ColumnDiff]
 
     @property
-    def added_cols(self) -> list[str]:
+    def added_cols(self) -> List[str]:
         return [c.name for c in self.columns if c.status == "added"]
 
     @property
-    def removed_cols(self) -> list[str]:
+    def removed_cols(self) -> List[str]:
         return [c.name for c in self.columns if c.status == "removed"]
 
     @property
-    def changed_cols(self) -> list[ColumnDiff]:
+    def changed_cols(self) -> List[ColumnDiff]:
         return [c for c in self.columns if c.status == "changed"]
 
 
-def _histogram_overlap(counts_a: list[int], counts_b: list[int]) -> float:
+def _histogram_overlap(counts_a: List[int], counts_b: List[int]) -> float:
     """Histogram intersection similarity: 1.0 = identical, 0.0 = no overlap."""
     if not counts_a or not counts_b or len(counts_a) != len(counts_b):
         return 0.0
@@ -270,7 +270,7 @@ def diff_profiles(profile_a: DatasetProfile, profile_b: DatasetProfile) -> DiffR
     cols_b = {c.name: c for c in profile_b.columns}
     all_names = list(cols_a.keys()) + [n for n in cols_b if n not in cols_a]
 
-    col_diffs: list[ColumnDiff] = []
+    col_diffs: List[ColumnDiff] = []
     for name in all_names:
         ca = cols_a.get(name)
         cb = cols_b.get(name)
@@ -328,14 +328,14 @@ def diff_profiles(profile_a: DatasetProfile, profile_b: DatasetProfile) -> DiffR
     )
 
 
-def _try_float(val: str) -> float | None:
+def _try_float(val: str) -> Optional[float]:
     try:
         return float(val)
     except (ValueError, TypeError):
         return None
 
 
-def _try_bool(val: str) -> bool | None:
+def _try_bool(val: str) -> Optional[bool]:
     v = val.strip().lower()
     if v in ("true", "yes", "1", "t", "y"):
         return True
@@ -359,7 +359,7 @@ def _try_date(val: str) -> bool:
     return False
 
 
-def _infer_dtype(values: list[str]) -> str:
+def _infer_dtype(values: List[str]) -> str:
     non_empty = [v for v in values if v.strip() != ""]
     if not non_empty:
         return "empty"
@@ -395,7 +395,7 @@ def _infer_dtype(values: list[str]) -> str:
     return "text"
 
 
-def _compute_skewness(values: list[float]) -> float | None:
+def _compute_skewness(values: List[float]) -> Optional[float]:
     n = len(values)
     if n < 3:
         return None
@@ -410,7 +410,7 @@ def _compute_skewness(values: list[float]) -> float | None:
         return None
 
 
-def _compute_histogram(values: list[float], bins: int = 10) -> tuple[list[int], list[float]]:
+def _compute_histogram(values: List[float], bins: int = 10) -> Tuple[List[int], List[float]]:
     if not values:
         return [], []
     mn, mx = min(values), max(values)
@@ -427,14 +427,14 @@ def _compute_histogram(values: list[float], bins: int = 10) -> tuple[list[int], 
     return counts, [round(e, 4) for e in edges]
 
 
-def _outliers_iqr(values: list[float], q1: float, q3: float) -> int:
+def _outliers_iqr(values: List[float], q1: float, q3: float) -> int:
     iqr = q3 - q1
     lo = q1 - 1.5 * iqr
     hi = q3 + 1.5 * iqr
     return sum(1 for v in values if v < lo or v > hi)
 
 
-def _percentile(sorted_vals: list[float], p: float) -> float:
+def _percentile(sorted_vals: List[float], p: float) -> float:
     n = len(sorted_vals)
     if n == 0:
         return 0.0
@@ -443,7 +443,7 @@ def _percentile(sorted_vals: list[float], p: float) -> float:
     return sorted_vals[lo] + (sorted_vals[hi] - sorted_vals[lo]) * (idx - lo)
 
 
-def _pearson(xs: list[float], ys: list[float]) -> float | None:
+def _pearson(xs: List[float], ys: List[float]) -> Optional[float]:
     """Pearson r between two same-length float lists."""
     n = len(xs)
     if n < 3:
@@ -458,7 +458,7 @@ def _pearson(xs: list[float], ys: list[float]) -> float | None:
     return round(num / (dx * dy), 4)
 
 
-def _build_correlation(columns: list[ColumnProfile]) -> dict[str, dict[str, float]]:
+def _build_correlation(columns: List[ColumnProfile]) -> Dict[str, Dict[str, float]]:
     """Build pairwise Pearson correlation matrix for all numeric columns."""
     numeric_cols = [(c.name, c) for c in columns if c.dtype == "numeric" and c.mean is not None]
     if len(numeric_cols) < 2:
@@ -467,15 +467,15 @@ def _build_correlation(columns: list[ColumnProfile]) -> dict[str, dict[str, floa
     # Rebuild float lists from histogram edges isn't enough — we need raw values.
     # They were already computed inside profile_csv; pass them through via a side channel.
     # We store raw floats temporarily on the column object (stripped before return).
-    result: dict[str, dict[str, float]] = {}
+    result: Dict[str, Dict[str, float]] = {}
     for i, (name_a, col_a) in enumerate(numeric_cols):
         result[name_a] = {}
-        raw_a: list[float] = getattr(col_a, "_raw_floats", [])
+        raw_a: List[float] = getattr(col_a, "_raw_floats", [])
         for j, (name_b, col_b) in enumerate(numeric_cols):
             if i == j:
                 result[name_a][name_b] = 1.0
                 continue
-            raw_b: list[float] = getattr(col_b, "_raw_floats", [])
+            raw_b: List[float] = getattr(col_b, "_raw_floats", [])
             # Align by index (both come from same rows, same length)
             pairs = [(a, b) for a, b in zip(raw_a, raw_b)
                      if a is not None and b is not None]
@@ -488,7 +488,7 @@ def _build_correlation(columns: list[ColumnProfile]) -> dict[str, dict[str, floa
     return result
 
 
-def profile_csv(path: str, sample_n: int | None = None) -> DatasetProfile:
+def profile_csv(path: str, sample_n: Optional[int] = None) -> DatasetProfile:
     """Read a CSV and return a full DatasetProfile."""
     file_size = os.path.getsize(path)
 
@@ -497,8 +497,8 @@ def profile_csv(path: str, sample_n: int | None = None) -> DatasetProfile:
         if not reader.fieldnames:
             raise ValueError("CSV has no headers or is empty.")
         headers = list(reader.fieldnames)
-        raw: dict[str, list[str]] = {h: [] for h in headers}
-        rows: list[tuple[str, ...]] = []
+        raw: Dict[str, List[str]] = {h: [] for h in headers}
+        rows: List[Tuple[str, ...]] = []
         for row in reader:
             t = tuple(row.get(h, "") or "" for h in headers)
             rows.append(t)
@@ -521,14 +521,14 @@ def profile_csv(path: str, sample_n: int | None = None) -> DatasetProfile:
     total_rows = len(rows)
 
     # Duplicate detection
-    seen: set[tuple] = set()
+    seen: Set[Tuple[str, ...]] = set()
     dup_count = 0
     for r in rows:
         if r in seen:
             dup_count += 1
         seen.add(r)
 
-    columns: list[ColumnProfile] = []
+    columns: List[ColumnProfile] = []
 
     for h in headers:
         vals = raw[h]
@@ -561,7 +561,7 @@ def profile_csv(path: str, sample_n: int | None = None) -> DatasetProfile:
                 "?", "-", "--", ".", "unknown", "n.a.", "n.a", "#n/a",
                 "999", "9999", "99999", "-999", "-9999", "-1", "999999",
             }
-            sentinel_hits: dict[str, int] = {}
+            sentinel_hits: Dict[str, int] = {}
             for v in vals:
                 vl = v.strip().lower()
                 if vl in SENTINELS and _try_float(v) is None:

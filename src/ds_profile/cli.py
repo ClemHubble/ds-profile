@@ -6,6 +6,7 @@ import argparse
 import os
 import re
 import sys
+from typing import Optional
 
 from . import __version__
 from .profiler import profile_csv, diff_profiles
@@ -17,7 +18,7 @@ def _strip_ansi(text: str) -> str:
     return re.sub(r"\033\[[0-9;]+m", "", text)
 
 
-def _write_output(content: str, export_path: str | None, binary: bool = False) -> None:
+def _write_output(content: str, export_path: Optional[str], binary: bool = False) -> None:
     """Print to stdout or write to file, with a confirmation message."""
     if export_path:
         mode = "wb" if binary else "w"

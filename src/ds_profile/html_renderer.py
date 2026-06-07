@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import html as html_module
+from typing import Dict, List, Optional
 from .profiler import DatasetProfile, ColumnProfile
 
 
@@ -40,7 +41,7 @@ def _missing_bar(missing: int, total: int) -> str:
     </div>'''
 
 
-def _skew_badge(skew: float | None) -> str:
+def _skew_badge(skew: Optional[float]) -> str:
     if skew is None:
         return '<span style="color:#64748b">n/a</span>'
     abs_s = abs(skew)
@@ -190,7 +191,7 @@ def _col_card(col: ColumnProfile, total_rows: int, idx: int) -> str:
     </div>'''
 
 
-def _corr_table(corr: dict[str, dict[str, float]]) -> str:
+def _corr_table(corr: Dict[str, Dict[str, float]]) -> str:
     if not corr or len(corr) < 2:
         return ""
     names = list(corr.keys())

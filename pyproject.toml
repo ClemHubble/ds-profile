@@ -7,7 +7,7 @@ name = "ds-profile"
 version = "0.1.0"
 description = "Instant Dataset Profiler — rich terminal summary for any CSV"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.8"
 license = { text = "MIT" }
 keywords = ["data-science", "csv", "profiling", "cli", "eda"]
 authors = [

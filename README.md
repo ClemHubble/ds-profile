@@ -51,7 +51,7 @@ uv run ds-profile data.csv
 pip install "git+https://github.com/<your-username>/ds-profile.git"
 ```
 
-Requires Python 3.9 or later. No other dependencies.
+Requires Python 3.8 or later. No other dependencies.
 
 > **Note:** `ds-profile` works on any CSV file you point it at. The GitHub repository contains sample CSVs in `tests/` for development, but they are not included when the package is installed — just bring your own data file.
 

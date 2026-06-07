@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 import os
 import shutil
-from typing import Any
+from typing import Any, Dict, List, Optional
 
 from .profiler import ColumnProfile, DatasetProfile, DiffResult
 
@@ -52,7 +52,7 @@ def color(s: str, c: str) -> str:
 
 BARS = " ▁▂▃▄▅▆▇█"
 
-def spark(counts: list[int], width: int = 20) -> str:
+def spark(counts: List[int], width: int = 20) -> str:
     """Render a unicode sparkline histogram."""
     if not counts:
         return dim("(no data)")
@@ -68,7 +68,7 @@ def spark(counts: list[int], width: int = 20) -> str:
     return color(bar, BRIGHT_CYAN)
 
 
-def block_histogram(counts: list[int], edges: list[float], col_width: int = 40) -> list[str]:
+def block_histogram(counts: List[int], edges: List[float], col_width: int = 40) -> List[str]:
     """Multi-line block histogram with labels."""
     if not counts:
         return [dim("  (no data)")]
@@ -101,7 +101,7 @@ def block_histogram(counts: list[int], edges: list[float], col_width: int = 40) 
 
 # ─── Skewness label ──────────────────────────────────────────────────────────
 
-def skew_label(skew: float | None) -> str:
+def skew_label(skew: Optional[float]) -> str:
     if skew is None:
         return dim("n/a")
     abs_s = abs(skew)
@@ -151,12 +151,12 @@ def dtype_badge(dtype: str) -> str:
 
 # ─── Main render ──────────────────────────────────────────────────────────────
 
-def _hr(char: str = "─", width: int | None = None) -> str:
+def _hr(char: str = "─", width: Optional[int] = None) -> str:
     w = width or shutil.get_terminal_size((100, 40)).columns
     return color(char * w, DIM)
 
 
-def _header_box(title: str, subtitle: str = "") -> list[str]:
+def _header_box(title: str, subtitle: str = "") -> List[str]:
     term_w = shutil.get_terminal_size((100, 40)).columns
     lines = []
     lines.append(color("╔" + "═" * (term_w - 2) + "╗", BRIGHT_CYAN))
@@ -181,7 +181,7 @@ def _corr_color(r: float) -> str:
     return DIM
 
 
-def render_correlation(corr: dict[str, dict[str, float]]) -> list[str]:
+def render_correlation(corr: Dict[str, Dict[str, float]]) -> List[str]:
     """Render a pairwise correlation heatmap as a text grid."""
     if not corr:
         return []
@@ -198,7 +198,7 @@ def render_correlation(corr: dict[str, dict[str, float]]) -> list[str]:
     cell_w = 7  # " +0.99 "
     col_w = cell_w
 
-    lines: list[str] = []
+    lines: List[str] = []
 
     # Header row
     row_label_w = max_label + 2
@@ -236,7 +236,7 @@ def render_head(path: str, n: int) -> str:
     """Read first N rows of a CSV and render as a formatted table."""
     import csv as csv_mod
 
-    lines: list[str] = []
+    lines: List[str] = []
     term_w = shutil.get_terminal_size((100, 40)).columns
 
     def add(*parts: str):
@@ -247,7 +247,7 @@ def render_head(path: str, n: int) -> str:
         if not reader.fieldnames:
             return "Error: CSV has no headers or is empty."
         headers = list(reader.fieldnames)
-        rows: list[dict] = []
+        rows: List[Dict[str, Any]] = []
         for i, row in enumerate(reader):
             if i >= n:
                 break
@@ -274,10 +274,10 @@ def render_head(path: str, n: int) -> str:
     }
 
     # If too many columns to fit, show first N that fit
-    visible_headers: list[str] = []
+    visible_headers: List[str] = []
     used = 4  # left margin
     for h in headers:
-        needed = col_widths[h] + 3  # " | " separator
+        needed = col_widths[h] + 3  # column separator
         if used + needed > term_w - 5:
             break
         visible_headers.append(h)
@@ -319,7 +319,7 @@ def render_head(path: str, n: int) -> str:
 
 def render_summary(profile: DatasetProfile) -> str:
     """Render a compact one-line-per-column summary table."""
-    lines: list[str] = []
+    lines: List[str] = []
     term_w = shutil.get_terminal_size((100, 40)).columns
 
     def add(*parts: str):
@@ -420,7 +420,7 @@ def render_summary(profile: DatasetProfile) -> str:
 
 def render_warn(profile: DatasetProfile) -> str:
     """Render only data quality warnings — errors first, then warnings, then info."""
-    lines: list[str] = []
+    lines: List[str] = []
     term_w = shutil.get_terminal_size((100, 40)).columns
 
     def add(*parts: str):
@@ -459,7 +459,7 @@ def render_warn(profile: DatasetProfile) -> str:
         "high_cardinality":  BRIGHT_YELLOW,
     }
 
-    def render_group(group: list[dict], title: str, title_color: str) -> None:
+    def render_group(group: List[Dict[str, Any]], title: str, title_color: str) -> None:
         if not group:
             return
         add(b(color(f"  {title}", title_color)))
@@ -508,7 +508,7 @@ def render_warn(profile: DatasetProfile) -> str:
 
 def render_diff(diff: DiffResult) -> str:
     """Render a DiffResult to a terminal string."""
-    lines: list[str] = []
+    lines: List[str] = []
     term_w = shutil.get_terminal_size((100, 40)).columns
 
     def add(*parts: str):
@@ -610,7 +610,7 @@ def render_diff(diff: DiffResult) -> str:
 
 def render_profile(profile: DatasetProfile, no_color: bool = False, compact: bool = False) -> str:
     """Render a DatasetProfile to a terminal string."""
-    lines: list[str] = []
+    lines: List[str] = []
     term_w = shutil.get_terminal_size((100, 40)).columns
 
     def add(*parts: str):
