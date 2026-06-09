@@ -2,7 +2,7 @@
 
 A lightweight command-line tool that gives you an instant, rich terminal summary of any CSV dataset — column types, missing values, outlier counts, skewness, distribution histograms, a Pearson correlation matrix, sentinel value detection, and CSV diffing. Like `pandas-profiling`, but zero dependencies and fast enough to run on every dataset you open.
 
-No pandas. No numpy. No rich. Pure Python 3.9+ standard library.
+No pandas. No numpy. No rich. Pure Python 3.8+ standard library.
 
 ## Why?
 
@@ -315,7 +315,7 @@ The diff report shows:
 - `json` — JSON export
 - `html` — HTML escaping
 
-No pandas, no numpy, no rich, no click. Installs in under a second and runs on any Python 3.9+ environment with zero setup.
+No pandas, no numpy, no rich, no click. Installs in under a second and runs on any Python 3.8+ environment with zero setup.
 
 ---
 
