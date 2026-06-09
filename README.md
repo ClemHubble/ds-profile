@@ -1,8 +1,8 @@
 # ds-profile
 
-A lightweight command-line tool that gives you an instant, rich terminal summary of any CSV dataset — column types, missing values, outlier counts, skewness, distribution histograms, a Pearson correlation matrix, sentinel value detection, and CSV diffing. Like `pandas-profiling`, but zero dependencies and fast enough to run on every dataset you open.
+A lightweight command-line tool that gives you an instant, rich terminal summary of any CSV dataset — column types, missing values, outlier counts, skewness, distribution histograms, a Pearson correlation matrix, sentinel value detection, and CSV diffing. Export to a shareable HTML report with interactive charts, or machine-readable JSON, with a single flag. Like `pandas-profiling`, but fast enough to run on every dataset you open, with no setup required.
 
-No pandas. No numpy. Pure Python 3.8+ standard library.
+One dependency (Rich for terminal formatting). No pandas. No numpy. Python 3.8+.
 
 ## Why?
 
