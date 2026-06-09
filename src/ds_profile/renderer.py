@@ -277,7 +277,7 @@ def render_head(path: str, n: int) -> str:
     visible_headers: List[str] = []
     used = 4  # left margin
     for h in headers:
-        needed = col_widths[h] + 3  # column separator
+        needed = col_widths[h] + 3  # " | " separator
         if used + needed > term_w - 5:
             break
         visible_headers.append(h)
@@ -608,7 +608,7 @@ def render_diff(diff: DiffResult) -> str:
     return "\n".join(lines)
 
 
-def render_profile(profile: DatasetProfile, no_color: bool = False, compact: bool = False) -> str:
+def render_profile(profile: DatasetProfile, no_color: bool = False, compact: bool = False, skip_correlation: bool = False) -> str:
     """Render a DatasetProfile to a terminal string."""
     lines: List[str] = []
     term_w = shutil.get_terminal_size((100, 40)).columns
@@ -720,7 +720,7 @@ def render_profile(profile: DatasetProfile, no_color: bool = False, compact: boo
                 f"{color(f'({total_sent} masked nulls — fix before modeling)', BRIGHT_RED)}")
 
     # ── Correlation matrix ──
-    if profile.correlation and not compact:
+    if profile.correlation and not compact and not skip_correlation:
         add()
         add(b(color("  CORRELATION MATRIX  ", BRIGHT_WHITE)) + color("(Pearson r — numeric columns only)", DIM))
         add(_hr("─", term_w))

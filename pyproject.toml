@@ -21,7 +21,7 @@ classifiers = [
   "Programming Language :: Python :: 3",
   "License :: OSI Approved :: MIT License",
 ]
-dependencies = []
+dependencies = ["rich>=13.0"]
 
 [project.scripts]
 ds-profile = "ds_profile.cli:main"

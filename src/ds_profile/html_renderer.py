@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import html as html_module
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 from .profiler import DatasetProfile, ColumnProfile
 
 

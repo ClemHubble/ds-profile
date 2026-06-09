@@ -13,24 +13,38 @@ from .profiler import profile_csv, diff_profiles
 from .renderer import render_profile, render_summary, render_warn, render_diff, render_head
 from .html_renderer import render_html
 
+# Rich is a declared dependency but guard anyway for safety
+try:
+    from .rich_renderer import (
+        rich_head,
+        rich_summary,
+        rich_warn,
+        rich_correlation,
+        rich_overview_panel,
+        console,
+    )
+    RICH_AVAILABLE = True
+except ImportError:
+    RICH_AVAILABLE = False
+
 
 def _strip_ansi(text: str) -> str:
     return re.sub(r"\033\[[0-9;]+m", "", text)
 
 
-def _write_output(content: str, export_path: Optional[str], binary: bool = False) -> None:
-    """Print to stdout or write to file, with a confirmation message."""
+def _write_output(content: str, export_path: Optional[str]) -> None:
+    """Print to stdout or write plain text to file with a confirmation message."""
     if export_path:
-        mode = "wb" if binary else "w"
-        kwargs = {} if binary else {"encoding": "utf-8"}
-        with open(export_path, mode, **kwargs) as f:
-            if binary:
-                f.write(content.encode("utf-8") if isinstance(content, str) else content)
-            else:
-                f.write(content)
+        with open(export_path, "w", encoding="utf-8") as f:
+            f.write(content)
         abs_path = os.path.abspath(export_path)
         size_kb = os.path.getsize(abs_path) / 1024
-        print(f"✓  Saved to {abs_path}  ({size_kb:.1f} KB)", file=sys.stderr)
+        # print confirmation to stderr so it doesn't pollute piped output
+        if RICH_AVAILABLE:
+            console.print(f"[green]✓[/green]  Saved to [cyan]{abs_path}[/cyan]  [dim]({size_kb:.1f} KB)[/dim]",
+                          highlight=False)
+        else:
+            print(f"✓  Saved to {abs_path}  ({size_kb:.1f} KB)", file=sys.stderr)
     else:
         print(content)
 
@@ -127,16 +141,16 @@ Examples:
     if not path.lower().endswith(".csv"):
         print(f"Warning: file does not have .csv extension — attempting anyway.", file=sys.stderr)
 
-    # ── --head: independent of profiling, just reads raw rows ─────────────────
+    # ── --head: independent of profiling ──────────────────────────────────────
     if args.head is not None:
         n = args.head if args.head > 0 else 10
-        output = render_head(path, n)
-        if args.no_color or not sys.stdout.isatty():
-            output = _strip_ansi(output)
-        if args.export:
-            _write_output(_strip_ansi(output), args.export)
+        if RICH_AVAILABLE and not args.no_color and not args.export:
+            rich_head(path, n)
         else:
-            print(output)
+            output = render_head(path, n)
+            if args.no_color or not sys.stdout.isatty():
+                output = _strip_ansi(output)
+            _write_output(_strip_ansi(output) if args.export else output, args.export)
         return
 
     try:
@@ -178,7 +192,7 @@ Examples:
             if a in wanted
         }
 
-    # ── Build output ───────────────────────────────────────────────────────────
+    # ── JSON / HTML output ────────────────────────────────────────────────────
     if args.output == "json":
         content = profile.to_json()
         _write_output(content, args.export)
@@ -189,18 +203,43 @@ Examples:
         _write_output(content, args.export)
         return
 
+    # ── Terminal output: Rich where it shines, custom renderer elsewhere ──────
+    use_rich = RICH_AVAILABLE and not args.no_color and not args.export
+
     if args.summary:
-        output = render_summary(profile)
+        if use_rich:
+            rich_summary(profile)
+        else:
+            output = render_summary(profile)
+            if args.no_color or not sys.stdout.isatty():
+                output = _strip_ansi(output)
+            _write_output(_strip_ansi(output) if args.export else output, args.export)
+
     elif args.warn:
-        output = render_warn(profile)
+        if use_rich:
+            rich_warn(profile)
+        else:
+            output = render_warn(profile)
+            if args.no_color or not sys.stdout.isatty():
+                output = _strip_ansi(output)
+            _write_output(_strip_ansi(output) if args.export else output, args.export)
+
     else:
-        output = render_profile(profile, no_color=args.no_color, compact=args.compact)
-
-    if args.no_color or not sys.stdout.isatty():
-        output = _strip_ansi(output)
-
-    # --export always writes plain text (no ANSI) regardless of --no-color
-    _write_output(_strip_ansi(output) if args.export else output, args.export)
+        # Full profile: Rich overview panel + Rich correlation matrix at top,
+        # then custom renderer for histograms and per-column stats
+        if use_rich:
+            rich_overview_panel(profile)
+        output = render_profile(
+            profile,
+            no_color=args.no_color,
+            compact=args.compact,
+            skip_correlation=use_rich,   # Rich draws it after
+        )
+        if args.no_color or not sys.stdout.isatty():
+            output = _strip_ansi(output)
+        _write_output(_strip_ansi(output) if args.export else output, args.export)
+        if use_rich and not args.compact and profile.correlation:
+            rich_correlation(profile.correlation)
 
 
 if __name__ == "__main__":

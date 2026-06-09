@@ -57,7 +57,7 @@ class DatasetProfile:
         """Serialize the full profile to a JSON string."""
         import json
 
-        def col_to_dict(c: ColumnProfile) -> dict:
+        def col_to_dict(c: ColumnProfile) -> Dict[str, Any]:
             return {
                 "name": c.name,
                 "dtype": c.dtype,
@@ -98,10 +98,10 @@ class DatasetProfile:
     def warn_issues(self) -> List[Dict[str, Any]]:
         """
         Return a list of data quality warnings across all columns.
-         Each warning is a dict with keys: column, severity, code, message.
-         Severity is one of: error, warning, info.
+        Each warning is a dict with keys: column, severity, code, message.
+        Severity: error, warning, or info
         Codes: high_missing, constant_col, high_skew, high_outliers,
-               sentinels, high_cardinality, duplicate_rows
+            sentinels, high_cardinality, duplicate_rows
         """
         issues: List[Dict[str, Any]] = []
 
@@ -470,12 +470,12 @@ def _build_correlation(columns: List[ColumnProfile]) -> Dict[str, Dict[str, floa
     result: Dict[str, Dict[str, float]] = {}
     for i, (name_a, col_a) in enumerate(numeric_cols):
         result[name_a] = {}
-        raw_a: List[float] = getattr(col_a, "_raw_floats", [])
+        raw_a: List[Optional[float]] = getattr(col_a, "_raw_floats", [])
         for j, (name_b, col_b) in enumerate(numeric_cols):
             if i == j:
                 result[name_a][name_b] = 1.0
                 continue
-            raw_b: List[float] = getattr(col_b, "_raw_floats", [])
+            raw_b: List[Optional[float]] = getattr(col_b, "_raw_floats", [])
             # Align by index (both come from same rows, same length)
             pairs = [(a, b) for a, b in zip(raw_a, raw_b)
                      if a is not None and b is not None]

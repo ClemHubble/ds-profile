@@ -2,7 +2,7 @@
 
 A lightweight command-line tool that gives you an instant, rich terminal summary of any CSV dataset — column types, missing values, outlier counts, skewness, distribution histograms, a Pearson correlation matrix, sentinel value detection, and CSV diffing. Like `pandas-profiling`, but zero dependencies and fast enough to run on every dataset you open.
 
-No pandas. No numpy. No rich. Pure Python 3.8+ standard library.
+No pandas. No numpy. Pure Python 3.8+ standard library.
 
 ## Why?
 
@@ -21,7 +21,7 @@ uv tool install "git+https://github.com/<your-username>/ds-profile.git"
 Then run it directly from any directory:
 
 ```bash
-ds-profile data.csv
+ds-profile mydata.csv
 ```
 
 If `ds-profile` is not found after installing, run this once to add uv's tool bin to your shell PATH:
@@ -42,7 +42,7 @@ uv add "git+https://github.com/<your-username>/ds-profile.git"
 With this approach, prefix commands with `uv run`:
 
 ```bash
-uv run ds-profile data.csv
+uv run ds-profile mydata.csv
 ```
 
 ### With pip
@@ -51,7 +51,7 @@ uv run ds-profile data.csv
 pip install "git+https://github.com/<your-username>/ds-profile.git"
 ```
 
-Requires Python 3.8 or later. No other dependencies.
+Requires Python 3.8 or later. Depends only on [Rich](https://github.com/Textualize/rich) for terminal formatting — no pandas, no numpy.
 
 > **Note:** `ds-profile` works on any CSV file you point it at. The GitHub repository contains sample CSVs in `tests/` for development, but they are not included when the package is installed — just bring your own data file.
 
@@ -303,9 +303,11 @@ The diff report shows:
 
 ---
 
-## No Dependencies
+## Dependencies
 
-`ds-profile` is implemented entirely in the Python standard library:
+`ds-profile` has exactly one dependency: [**Rich**](https://github.com/Textualize/rich) — the standard Python library for beautiful terminal output. It powers the formatted tables in `--head`, `--summary`, and `--warn`, and the overview panel in the full profile.
+
+Everything else is pure Python standard library:
 
 - `csv` — CSV parsing
 - `statistics` — mean, median, stdev
@@ -315,7 +317,7 @@ The diff report shows:
 - `json` — JSON export
 - `html` — HTML escaping
 
-No pandas, no numpy, no rich, no click. Installs in under a second and runs on any Python 3.8+ environment with zero setup.
+Rich is installed automatically when you install `ds-profile`. If for any reason it's unavailable, the tool gracefully falls back to its built-in ANSI renderer — all features still work. Requires Python 3.8 or later.
 
 ---
 
