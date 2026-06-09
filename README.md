@@ -42,7 +42,7 @@ uv add "git+https://github.com/<your-username>/ds-profile.git"
 With this approach, prefix commands with `uv run`:
 
 ```bash
-uv run ds-profile mydata.csv
+uv run ds-profile data.csv
 ```
 
 ### With pip
