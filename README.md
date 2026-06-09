@@ -15,7 +15,7 @@ Every data science workflow starts the same way: open a new dataset, run `.head(
 This makes `ds-profile` available as a command anywhere on your system:
 
 ```bash
-uv tool install "git+https://github.com/<your-username>/ds-profile.git"
+uv tool install "git+https://github.com/ClemHubble/ds-profile.git"
 ```
 
 Then run it directly from any directory:
