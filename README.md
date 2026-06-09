@@ -36,7 +36,7 @@ source ~/.zshrc   # or ~/.bashrc depending on your shell
 If you want `ds-profile` scoped to a particular project's virtualenv:
 
 ```bash
-uv add "git+https://github.com/<your-username>/ds-profile.git"
+uv add "git+https://github.com/ClemHubble/ds-profile.git"
 ```
 
 With this approach, prefix commands with `uv run`:
@@ -48,7 +48,7 @@ uv run ds-profile data.csv
 ### With pip
 
 ```bash
-pip install "git+https://github.com/<your-username>/ds-profile.git"
+pip install "git+https://github.com/ClemHubble/ds-profile.git"
 ```
 
 Requires Python 3.8 or later. Depends only on [Rich](https://github.com/Textualize/rich) for terminal formatting — no pandas, no numpy.
