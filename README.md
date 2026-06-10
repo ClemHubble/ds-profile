@@ -2,7 +2,7 @@
 
 A lightweight command-line tool that gives you an instant, rich terminal summary of any CSV dataset — column types, missing values, outlier counts, skewness, distribution histograms, a Pearson correlation matrix, sentinel value detection, and CSV diffing. Export to a shareable HTML report with interactive charts, or machine-readable JSON, with a single flag. Like `pandas-profiling`, but fast enough to run on every dataset you open, with no setup required.
 
-One dependency (Rich for terminal formatting). No pandas. No numpy. Python 3.8+.
+One dependency ([Rich](https://github.com/Textualize/rich) for terminal formatting). No pandas. No numpy. Python 3.8+.
 
 ## Why?
 
@@ -15,7 +15,7 @@ Every data science workflow starts the same way: open a new dataset, run `.head(
 This makes `ds-profile` available as a command anywhere on your system:
 
 ```bash
-uv tool install "git+https://github.com/ClemHubble/ds-profile.git"
+uv tool install "git+https://github.com/<your-username>/ds-profile.git"
 ```
 
 Then run it directly from any directory:
@@ -36,19 +36,19 @@ source ~/.zshrc   # or ~/.bashrc depending on your shell
 If you want `ds-profile` scoped to a particular project's virtualenv:
 
 ```bash
-uv add "git+https://github.com/ClemHubble/ds-profile.git"
+uv add "git+https://github.com/<your-username>/ds-profile.git"
 ```
 
 With this approach, prefix commands with `uv run`:
 
 ```bash
-uv run ds-profile data.csv
+uv run ds-profile mydata.csv
 ```
 
 ### With pip
 
 ```bash
-pip install "git+https://github.com/ClemHubble/ds-profile.git"
+pip install "git+https://github.com/<your-username>/ds-profile.git"
 ```
 
 Requires Python 3.8 or later. Depends only on [Rich](https://github.com/Textualize/rich) for terminal formatting — no pandas, no numpy.
@@ -63,30 +63,48 @@ Requires Python 3.8 or later. Depends only on [Rich](https://github.com/Textuali
 ds-profile data.csv
 ```
 
-### All Options
+Run `ds-profile --help` to see all options:
 
-| Flag | Description |
-|------|-------------|
-| `--summary` / `-s` | One-line-per-column overview table — fast orientation for wide datasets |
-| `--warn` / `-w` | Data quality report — only prints columns with problems |
-| `--head N` | Preview the first N rows as a formatted table (default: 10) |
-| `--export FILE` | Save output to a file instead of printing (auto-detects format from extension) |
-| `--compact` / `-c` | Shorter output — hides histograms, fewer top values |
-| `--no-color` | Strip ANSI colors (useful for saving output to a file) |
-| `--cols col1,col2,...` | Only profile specific columns (comma-separated) |
-| `--sample N` | Profile a random sample of N rows — fast mode for large files |
-| `--output terminal` | Default: colored terminal output |
-| `--output json` | Machine-readable JSON — pipe to `jq` or save for later |
-| `--output html` | Self-contained HTML report with interactive charts |
-| `--diff second.csv` | Compare two CSVs and show what changed |
-| `--version` / `-v` | Show version and exit |
+```
+usage: ds-profile [-h] [--summary] [--warn] [--head [N]] [--export FILE]
+                  [--diff CSV_B] [--compact] [--no-color]
+                  [--cols COL1,COL2,...] [--output {terminal,json,html}]
+                  [--sample N] [--version]
+                  csv_file
+
+Instant Dataset Profiler — rich terminal summary for any CSV.
+
+positional arguments:
+  csv_file              Path to the CSV file to profile
+
+options:
+  -h, --help            show this help message and exit
+  --summary, -s         One-line-per-column overview table — fast orientation
+                        for wide datasets
+  --warn, -w            Show only data quality warnings: high missing,
+                        sentinels, skew, outliers, constant columns
+  --head [N]            Preview the first N rows as a formatted table
+                        (default: 10)
+  --export FILE         Save output to a file instead of printing (e.g.
+                        report.html, report.txt, profile.json)
+  --diff CSV_B          Compare csv_file against a second CSV and show what
+                        changed
+  --compact, -c         Compact output — no histograms, fewer top values
+  --no-color            Disable ANSI colors (useful for redirecting output)
+  --cols COL1,COL2,...  Only profile specific columns (comma-separated names)
+  --output {terminal,json,html}, -o {terminal,json,html}
+                        Output format: terminal (default), json, or html
+  --sample N            Profile only a random sample of N rows — useful for
+                        large files
+  --version, -v         show program's version number and exit
+```
 
 ---
 
 ## Examples
 
 ```bash
-# Full profile of a CSV
+# Full column-by-column profile
 ds-profile titanic.csv
 
 # One-line-per-column overview — great for wide datasets
@@ -95,13 +113,13 @@ ds-profile titanic.csv --summary
 # Data quality issues only — triage before modeling
 ds-profile titanic.csv --warn
 
-# Preview the first 10 rows as a formatted table
+# Preview the first 10 rows as a formatted table (default)
 ds-profile titanic.csv --head
 
 # Preview the first 20 rows
 ds-profile titanic.csv --head 20
 
-# Quick summary — no histograms, fast scan
+# Shorter output — no histograms, fast scan
 ds-profile titanic.csv --compact
 
 # Only profile specific columns
@@ -110,17 +128,27 @@ ds-profile titanic.csv --cols age,fare,survived
 # Save a plain-text report to a file
 ds-profile titanic.csv --export report.txt
 
-# Save an HTML report to a file
+# Generate and save an HTML report
 ds-profile titanic.csv --output html --export report.html
 
-# Save a JSON profile to a file
+# Export a JSON profile
 ds-profile titanic.csv --output json --export profile.json
 
-# Save warn output to a file
+# Save the warn report to a file
 ds-profile titanic.csv --warn --export issues.txt
 
 # Fast mode for large files — sample 5,000 rows
 ds-profile big_data.csv --sample 5000
+
+# Profile specific columns only
+ds-profile titanic.csv --cols age,fare,survived
+
+# Compare two versions of a dataset
+ds-profile train.csv --diff test.csv
+
+# Pipe JSON output to jq
+ds-profile titanic.csv --output json | jq '.columns[].name'
+```
 
 # Export as JSON and query with jq
 ds-profile titanic.csv --output json | jq '.columns[].name'
