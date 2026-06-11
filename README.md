@@ -140,26 +140,12 @@ ds-profile titanic.csv --warn --export issues.txt
 # Fast mode for large files — sample 5,000 rows
 ds-profile big_data.csv --sample 5000
 
-# Profile specific columns only
-ds-profile titanic.csv --cols age,fare,survived
-
-# Compare two versions of a dataset
-ds-profile train.csv --diff test.csv
-
-# Pipe JSON output to jq
-ds-profile titanic.csv --output json | jq '.columns[].name'
-```
-
-# Export as JSON and query with jq
-ds-profile titanic.csv --output json | jq '.columns[].name'
-ds-profile titanic.csv --output json > profile.json
-
-# Generate a shareable HTML report
-ds-profile titanic.csv --output html > report.html
-
 # Compare two versions of a dataset
 ds-profile train.csv --diff test.csv
 ds-profile data_v1.csv --diff data_v2.csv
+
+# Pipe JSON output to jq
+ds-profile titanic.csv --output json | jq '.columns[].name'
 ```
 
 ---
@@ -184,6 +170,11 @@ ds-profile data_v1.csv --diff data_v2.csv
 - Unique value count and cardinality ratio
 - Sample values
 
+**Dataset-level overview**
+- Row count, column count, file size
+- Duplicate row count
+- Column type breakdown at a glance
+
 ### `--head N` — Row Preview
 
 Prints the first N rows of the CSV as a clean formatted table — the terminal equivalent of `df.head()`. Empty and null-like values are dimmed for easy spotting. If the dataset is too wide for the terminal, it shows as many columns as fit and tells you how many were hidden.
@@ -195,17 +186,18 @@ ds-profile data.csv --head 25     # first 25 rows
 
 ### `--export FILE` — Save to File
 
-Saves the output directly to a file instead of printing to the terminal. Works with every mode — terminal profile, summary, warn, diff, JSON, and HTML. Plain-text formats (terminal, summary, warn, diff) are automatically stripped of ANSI color codes when exported. The file extension doesn't need to match — you choose it.
+Saves the output directly to a file instead of printing to the terminal. Works with every mode — terminal profile, summary, warn, diff, JSON, and HTML. Plain-text formats (terminal, summary, warn, diff) are automatically stripped of ANSI color codes when exported.
 
 ```bash
-ds-profile data.csv --export report.txt               # plain text profile
-ds-profile data.csv --output html --export report.html  # HTML report
-ds-profile data.csv --output json --export profile.json # JSON
-ds-profile data.csv --warn --export issues.txt        # quality report
-ds-profile data.csv --summary --export summary.txt    # summary table
+ds-profile data.csv --export report.txt                        # plain text profile
+ds-profile data.csv --output html --export report.html         # HTML report
+ds-profile data.csv --output json --export profile.json        # JSON
+ds-profile data.csv --warn --export issues.txt                 # quality report
+ds-profile data.csv --summary --export summary.txt             # summary table
 ```
 
 A confirmation message is printed to stderr after saving:
+
 ```
 ✓  Saved to /path/to/report.html  (42.3 KB)
 ```
@@ -242,17 +234,15 @@ ds-profile data.csv --warn
 ### Recommended workflow
 
 ```bash
-ds-profile data.csv --head          # see what the raw data looks like
-ds-profile data.csv --summary       # orient — what columns do I have?
-ds-profile data.csv --warn          # find problems before preprocessing
-ds-profile data.csv --cols age,fare # drill into suspicious columns
-ds-profile data.csv --output html --export report.html  # share with teammates
+ds-profile data.csv --head                                     # see what the raw data looks like
+ds-profile data.csv --summary                                  # orient — what columns do I have?
+ds-profile data.csv --warn                                     # find problems before preprocessing
+ds-profile data.csv --cols age,fare                            # drill into suspicious columns
+ds-profile data.csv --output html --export report.html         # share with teammates
 ```
-- Row count, column count, file size
-- Duplicate row count
-- Column type breakdown at a glance
 
 ### Pearson Correlation Matrix
+
 Automatically computed for all numeric columns and displayed at the end of the terminal profile. Color-coded by strength:
 - **Cyan** — strong correlation (|r| ≥ 0.7)
 - **Yellow** — moderate (|r| ≥ 0.4)
@@ -262,6 +252,7 @@ Automatically computed for all numeric columns and displayed at the end of the t
 Hidden in `--compact` mode.
 
 ### Sentinel Value Detection
+
 Flags values that look like encoded missing data but aren't actual empty cells — things like `"N/A"`, `"?"`, `"null"`, `"unknown"`, `"-999"`, `"--"`. These silently corrupt model training if left unfixed. Detected in both numeric and categorical columns.
 
 ```
@@ -269,6 +260,7 @@ Flags values that look like encoded missing data but aren't actual empty cells �
 ```
 
 ### `--sample N`
+
 Profiles a random sample of N rows instead of the full file. All statistics (mean, std, skewness, correlation, outliers) are computed on the sample. A notice in the overview reminds you it's a sample. Useful for files with millions of rows.
 
 ---
@@ -296,8 +288,8 @@ Generates a fully self-contained dark-themed HTML report — one file, no server
 
 ```bash
 ds-profile titanic.csv --output html > report.html
-open report.html   # macOS
-xdg-open report.html   # Linux
+open report.html        # macOS
+xdg-open report.html    # Linux
 ```
 
 The HTML report includes:
