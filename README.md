@@ -65,39 +65,39 @@ ds-profile data.csv
 
 Run `ds-profile --help` to see all options:
 
-```
+```text
 usage: ds-profile [-h] [--summary] [--warn] [--head [N]] [--export FILE]
                   [--diff CSV_B] [--compact] [--no-color]
                   [--cols COL1,COL2,...] [--output {terminal,json,html}]
                   [--sample N] [--version]
                   csv_file
+```
 
 Instant Dataset Profiler — rich terminal summary for any CSV.
 
-positional arguments:
-  csv_file              Path to the CSV file to profile
+**Positional Arguments**
 
-options:
-  -h, --help            show this help message and exit
-  --summary, -s         One-line-per-column overview table — fast orientation
-                        for wide datasets
-  --warn, -w            Show only data quality warnings: high missing,
-                        sentinels, skew, outliers, constant columns
-  --head [N]            Preview the first N rows as a formatted table
-                        (default: 10)
-  --export FILE         Save output to a file instead of printing (e.g.
-                        report.html, report.txt, profile.json)
-  --diff CSV_B          Compare csv_file against a second CSV and show what
-                        changed
-  --compact, -c         Compact output — no histograms, fewer top values
-  --no-color            Disable ANSI colors (useful for redirecting output)
-  --cols COL1,COL2,...  Only profile specific columns (comma-separated names)
-  --output {terminal,json,html}, -o {terminal,json,html}
-                        Output format: terminal (default), json, or html
-  --sample N            Profile only a random sample of N rows — useful for
-                        large files
-  --version, -v         show program's version number and exit
-```
+| Argument | Description |
+|----------|-------------|
+| `csv_file` | Path to the CSV file to profile |
+
+### All Options
+
+| Flag | Description |
+|------|-------------|
+| `--summary` / `-s` | One-line-per-column overview table — fast orientation for wide datasets |
+| `--warn` / `-w` | Data quality report — only prints columns with problems |
+| `--head N` | Preview the first N rows as a formatted table (default: 10) |
+| `--export FILE` | Save output to a file instead of printing (auto-detects format from extension) |
+| `--compact` / `-c` | Shorter output — hides histograms, fewer top values |
+| `--no-color` | Strip ANSI colors (useful for saving output to a file) |
+| `--cols col1,col2,...` | Only profile specific columns (comma-separated) |
+| `--sample N` | Profile a random sample of N rows — fast mode for large files |
+| `--output terminal` | Default: colored terminal output |
+| `--output json` | Machine-readable JSON — pipe to `jq` or save for later |
+| `--output html` | Self-contained HTML report with interactive charts |
+| `--diff second.csv` | Compare two CSVs and show what changed |
+| `--version` / `-v` | Show version and exit |
 
 ---
 
